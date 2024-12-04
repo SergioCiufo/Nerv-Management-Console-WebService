@@ -9,13 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.company.NervManagementConsoleREST.model.User;
+import com.company.NervManagementConsoleREST.service.SimulationSendOrCompleteService;
 import com.company.NervManagementConsoleREST.service.SimulationService;
 import com.company.NervManagementConsoleREST.utils.Costants;
 
 @WebServlet("/simulation")
 public class SimulationServlet extends HttpServlet {
 	
-	private final SimulationService simulationService = new SimulationService();
+	//private final SimulationService simulationService = new SimulationService();
+	private final SimulationSendOrCompleteService simulationSendOrCompleteService = new SimulationSendOrCompleteService();
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
@@ -24,7 +26,7 @@ public class SimulationServlet extends HttpServlet {
 			User user=(User)req.getSession().getAttribute(Costants.KEY_SESSION_USER);
 			String idMember= req.getParameter("memberSelect");
 			String idSimulation = req.getParameter("simulationId");
-			user=simulationService.sendMemberSimulation(user, idMember, idSimulation);
+			user=simulationSendOrCompleteService.sendMemberSimulation(user, idMember, idSimulation);
 
 			req.getSession().setAttribute(Costants.KEY_SESSION_USER, user);
 			resp.sendRedirect(req.getContextPath() + "/jsp/private/Home.jsp");

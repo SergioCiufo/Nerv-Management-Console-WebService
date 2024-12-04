@@ -10,26 +10,22 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.company.NervManagementConsoleREST.config.EntityManagerHandler;
-import com.company.NervManagementConsoleREST.config.JpaUtil;
-import com.company.NervManagementConsoleREST.dao.UserMemberStatsDao;
 import com.company.NervManagementConsoleREST.model.UserMembersStats;
+import com.company.NervManagementConsoleREST.service.UserMemberStatsService;
 
 @Path("/userMembers")
-public class UserMembersStatsService {
-	private UserMemberStatsDao umsDao = new UserMemberStatsDao();
+public class UserMembersStatsServiceRest {
+	private UserMemberStatsService userMemberStatsService= new UserMemberStatsService();
 
 	@GET
 	@Path("/{userId}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getUserMembers(@PathParam("userId") int userId) throws SQLException { //tipo response per personalizzarci la risposta di errore 204 ex
-    	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
-    		List<UserMembersStats> listUsm = umsDao.retrieveByUserId(userId, entityManagerHandler);
+    		List<UserMembersStats> listUsm = userMemberStatsService.retrieveByUserId(userId);
             if(listUsm == null || listUsm.isEmpty()) {
             	 return Response.status(Response.Status.NO_CONTENT).build(); //no content 204
             }
             return Response.ok(listUsm).build();
-    	}   
     }
 
 }

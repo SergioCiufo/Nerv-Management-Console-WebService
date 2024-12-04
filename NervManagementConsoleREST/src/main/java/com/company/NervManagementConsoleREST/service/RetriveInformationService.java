@@ -6,13 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.company.NervManagementConsoleREST.config.EntityManagerHandler;
-import com.company.NervManagementConsoleREST.dao.MemberDao;
-import com.company.NervManagementConsoleREST.dao.MissionArchiveDao;
-import com.company.NervManagementConsoleREST.dao.MissionDao;
-import com.company.NervManagementConsoleREST.dao.MissionParticipantsDao;
-import com.company.NervManagementConsoleREST.dao.SimulationDao;
-import com.company.NervManagementConsoleREST.dao.UserMemberStatsDao;
 import com.company.NervManagementConsoleREST.model.Member;
 import com.company.NervManagementConsoleREST.model.Mission;
 import com.company.NervManagementConsoleREST.model.MissionArchive;
@@ -23,49 +16,50 @@ import com.company.NervManagementConsoleREST.model.User;
 import com.company.NervManagementConsoleREST.model.UserMembersStats;
 
 public class RetriveInformationService {
-	private MemberDao memberDao;
-	private UserMemberStatsDao userMemberStatsDao;
-	private SimulationDao simulationDao;
-	private MissionDao missionDao;
-	private MissionParticipantsDao missionParticipantsDao;
-	private MissionArchiveDao missionArchiveDao;
+	private MemberService memberService;
+	private UserMemberStatsService userMemberStatsService;
+	private SimulationService simulationService;
+	private MissionService missionService;
+	private MissionParticipantsService missionParticipantsService;
+	private MissionArchiveService missionArchiveService;
+
 	
 	public RetriveInformationService() {
 		super();
-		this.memberDao=new MemberDao();
-		this.userMemberStatsDao=new UserMemberStatsDao();
-		this.simulationDao = new SimulationDao();
-		this.missionDao = new MissionDao();
-		this.missionParticipantsDao = new MissionParticipantsDao();
-		this.missionArchiveDao = new MissionArchiveDao();
+		this.memberService=new MemberService();
+		this.userMemberStatsService=new UserMemberStatsService();
+		this.simulationService = new SimulationService();
+		this.missionService = new MissionService();
+		this.missionParticipantsService = new MissionParticipantsService();
+		this.missionArchiveService = new MissionArchiveService();
 	}
 	
-	public User retriveUserInformation(User user, EntityManagerHandler entityManagerHandler) throws SQLException {
-			entityManagerHandler.clear(); //non venivano aggiornate le informazioni "nuove" del db, si pulisce la cache
-			List<Member> memberList = memberDao.retrieve(entityManagerHandler);
-			List<Simulation> simulationList = simulationDao.retrieve(entityManagerHandler);
+	public User retriveUserInformation(User user) throws SQLException {
+			//entityManagerHandler.clear(); //non venivano aggiornate le informazioni "nuove" del db, si pulisce la cache
+			List<Member> memberList = memberService.retrieveMembers();
+			List<Simulation> simulationList = simulationService.retrieveSimulations();
 
 			user.setMembers(memberList);
 			user.setSimulations(simulationList);
 			if(memberList != null) {
 				for (Member member : memberList) {
 
-					UserMembersStats stats = userMemberStatsDao.retrieveByUserAndMember(user, member, entityManagerHandler);
+					UserMembersStats stats = userMemberStatsService.retrieveStatsByUserAndMember(user, member);
 					member.setMemberStats(stats);
 				}
-				user = retriveSimulationAndPartecipant(user, entityManagerHandler);
-				user = recoverUserMemberMission(user, entityManagerHandler);
-				user = recoverMemberStats(user, entityManagerHandler);
+				user = retriveSimulationAndPartecipant(user);
+				user = recoverUserMemberMission(user);
+				user = recoverMemberStats(user);
 			}
 
 			return user;
 	}
 	
-	public User retriveSimulationAndPartecipant(User user, EntityManagerHandler entityManagerHandler) throws SQLException {
+	public User retriveSimulationAndPartecipant(User user) throws SQLException {
 			if (user.getParticipants() == null) {
 				user.setParticipants(new ArrayList<>());
 			}
-			List<Simulation> simulations = simulationDao.getSimulationAndParticipantsByUserId(user, entityManagerHandler);
+			List<Simulation> simulations = simulationService.getSimulationAndParticipantsByUserId(user);
 
 			if (simulations != null && !simulations.isEmpty()) {
 				user.getParticipants().clear();
@@ -83,15 +77,15 @@ public class RetriveInformationService {
 			return user;
 	}
 	
-	public User recoverUserMemberMission(User user, EntityManagerHandler entityManagerHandler) throws SQLException {
-			List<Mission> mission = missionDao.retrieve(entityManagerHandler);
+	public User recoverUserMemberMission(User user) throws SQLException {
+			List<Mission> mission = missionService.retrieveMissions();
 			List<MissionArchive> missionArchive = new ArrayList<MissionArchive>();
 			List<MissionParticipants> allMissionParticipants = new ArrayList<>();
 			for(Mission m : mission) {
-				List<MissionParticipants> missionParticipants = missionParticipantsDao.getMissionParticipantsByUserIdAndMissionId(user, m, entityManagerHandler);		
+				List<MissionParticipants> missionParticipants = missionParticipantsService.getMissionParticipantsByUserIdAndMissionId(user, m);		
 				allMissionParticipants.addAll(missionParticipants);	 
 				m.setMissionParticipants(missionParticipants);
-				List<MissionArchive> archives = missionArchiveDao.retriveByUserIdAndIdMission(user, m, entityManagerHandler);
+				List<MissionArchive> archives = missionArchiveService.retriveByUserIdAndIdMission(user, m);
 				missionArchive.addAll(archives);	
 			}		
 			user.setMissionParticipants(allMissionParticipants);
@@ -129,12 +123,13 @@ public class RetriveInformationService {
 			return user;		
 	}
 	
-	public User recoverMemberStats(User user, EntityManagerHandler entityManagerHandler) throws SQLException{
+	public User recoverMemberStats(User user) throws SQLException{
 			UserMembersStats ums = null;
 			for(Member m : user.getMembers()) {
-				ums = userMemberStatsDao.retrieveByUserAndMemberId(user, m.getIdMember(), entityManagerHandler);
+				ums = userMemberStatsService.retrieveStatsByUserAndMember(user, m);
 				m.setMemberStats(ums);
 			}
 			return user;
 	}
+	
 }

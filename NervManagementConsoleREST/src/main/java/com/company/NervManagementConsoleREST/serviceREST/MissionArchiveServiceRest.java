@@ -10,25 +10,21 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.company.NervManagementConsoleREST.config.EntityManagerHandler;
-import com.company.NervManagementConsoleREST.config.JpaUtil;
-import com.company.NervManagementConsoleREST.dao.MissionArchiveDao;
 import com.company.NervManagementConsoleREST.model.MissionArchive;
+import com.company.NervManagementConsoleREST.service.MissionArchiveService;
 
 @Path("missionArchive")
-public class MissionArchiveService {
-	private MissionArchiveDao maDao = new MissionArchiveDao();
+public class MissionArchiveServiceRest {
+	private MissionArchiveService missionArchiveService = new MissionArchiveService();
 	
 	@GET
 	@Path("/{userId}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response getActiveMissions(@PathParam("userId") int userId) throws SQLException {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
-			List<MissionArchive> listMa = maDao.retriveByUserId(userId, entityManagerHandler);
+	public Response getArchiveMissions(@PathParam("userId") int userId) throws SQLException {
+			List<MissionArchive> listMa = missionArchiveService.retriveByUserId(userId);
 			if(listMa == null || listMa.isEmpty()) {
 				return Response.status(Response.Status.NO_CONTENT).build(); //no content 204
 			}
 			return Response.ok(listMa).build();
-		}
 	}
 }

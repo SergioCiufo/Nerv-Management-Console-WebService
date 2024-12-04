@@ -2,11 +2,7 @@ package com.company.NervManagementConsoleREST.service;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.List;
 
-import com.company.NervManagementConsoleREST.config.EntityManagerHandler;
-import com.company.NervManagementConsoleREST.config.JpaUtil;
-import com.company.NervManagementConsoleREST.dao.service.SimulationServiceDao;
 import com.company.NervManagementConsoleREST.model.Member;
 import com.company.NervManagementConsoleREST.model.Simulation;
 import com.company.NervManagementConsoleREST.model.SimulationParticipant;
@@ -15,52 +11,52 @@ import com.company.NervManagementConsoleREST.model.UserMembersStats;
 import com.company.NervManagementConsoleREST.utils.CalculateUtils;
 import com.company.NervManagementConsoleREST.utils.LevelUpUtils;
 
-public class SimulationService {
-	private SimulationServiceDao simulationServiceDao;
-	/*
+public class SimulationSendOrCompleteService {
+	private SimulationService simulationService;
 	private MemberService memberService;
 	private UserMemberStatsService userMemberStatsService;
 	private SimulationParticipantsService simulationParticipantsService;
-*/
+	private final RetriveInformationService retriveInformationService;
 
-	public SimulationService() {
+	public SimulationSendOrCompleteService() {
 		super();
-		this.simulationServiceDao = new SimulationServiceDao();
-		/*
-		this.memberService = new MemberService();
-		this.userMemberStatsService = new UserMemberStatsService();
+		this.simulationService=new SimulationService();
 		this.simulationParticipantsService = new SimulationParticipantsService();
-		*/
-	}
-	
-	public List<Simulation> retrieveSimulations() throws SQLException{
-		return simulationServiceDao.retrieveSimulations();
-	}
-	
-	public List<Simulation> getSimulationAndParticipantsByUserId(User user) throws SQLException{
-		return simulationServiceDao.getSimulationAndParticipantsByUserId(user);
-	}
-	
-	public Simulation retrieveBySimulationId(int idSimulation) throws SQLException{
-		return simulationServiceDao.retrieveBySimulationId(idSimulation);
+		this.memberService=new MemberService();
+		this.userMemberStatsService=new UserMemberStatsService();
+		this.retriveInformationService = new RetriveInformationService();
 	}
 
-/*
-	public User completeSimulation (User user, String idStringMember, String idStringSimulation) throws SQLException {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
-			entityManagerHandler.beginTransaction();
-			
+	public User sendMemberSimulation (User user, String idStringMember, String idStringSimulation) throws SQLException {
+		int idMember = Integer.parseInt(idStringMember);
+		Member member = memberService.retrieveByMemberId(idMember);
+		int idSimulation = Integer.parseInt(idStringSimulation);
+		Simulation simulation = simulationService.retrieveBySimulationId(idSimulation);
+		LocalDateTime startTime = LocalDateTime.now();
+
+		int duration = simulation.getDurationTime();
+
+		LocalDateTime endTime = startTime.plusMinutes(duration);
+
+		userMemberStatsService.updateMembStatsStartSim(user, member);
+		SimulationParticipant simParticipant = new SimulationParticipant(simulation, user, member, startTime, endTime);
+		simulationParticipantsService.createParticipant(simParticipant);
+		user=retriveInformationService.retriveUserInformation(user);
+		return user;
+	}
+	
+	public User completeSimulation (User user, String idStringMember, String idStringSimulation) throws SQLException {	
 			SimulationParticipant simPart;
 			int idMember = Integer.parseInt(idStringMember);
-			Member member = memberDao.retrieveByMemberId(idMember, entityManagerHandler);
+			Member member = memberService.retrieveByMemberId(idMember);
 			int idSimulation = Integer.parseInt(idStringSimulation);
-			Simulation simulation = simulationDao.retrieveBySimulationId(idSimulation, entityManagerHandler);
+			Simulation simulation = simulationService.retrieveBySimulationId(idSimulation);
 			
-			simPart= simulationParticipantsDao.getParticipantbyUserAndMemberId(user, member, entityManagerHandler);
+			simPart= simulationParticipantsService.getParticipantbyUserAndMemberId(user, member);
 			if(simPart.getEndTime().isBefore(LocalDateTime.now())) {
 
 				UserMembersStats ums;
-				ums= userMemberStatsDao.retrieveByUserAndMember(user, member, entityManagerHandler);
+				ums= userMemberStatsService.retrieveStatsByUserAndMember(user, member);
 
 				Integer suppAbility = simulation.getSupportAbility();
 				suppAbility = CalculateUtils.randomizeStats(suppAbility);
@@ -85,14 +81,11 @@ public class SimulationService {
 
 				ums=LevelUpUtils.levelUp(ums, newExp);
 
-				userMemberStatsDao.updateMembStatsCompletedSim(user, member, ums, entityManagerHandler);
-				simulationParticipantsDao.removeParticipant(user, simulation, entityManagerHandler);
-
-				entityManagerHandler.commitTransaction();
+				userMemberStatsService.updateMembStatsCompletedSim(user, member, ums);
+				simulationParticipantsService.removeParticipant(user, simulation);
 			}
-			user=ris.retriveUserInformation(user, entityManagerHandler);
+			user=retriveInformationService.retriveUserInformation(user);
 			return user;
 		}
-	}
-	*/
+	
 }

@@ -10,26 +10,23 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.company.NervManagementConsoleREST.config.EntityManagerHandler;
-import com.company.NervManagementConsoleREST.config.JpaUtil;
-import com.company.NervManagementConsoleREST.dao.MissionParticipantsDao;
 import com.company.NervManagementConsoleREST.model.MissionParticipants;
+import com.company.NervManagementConsoleREST.service.MissionParticipantsService;
 
 @Path("missionParticipants")
-public class MissionParticipantsService {
-	private MissionParticipantsDao mpDao = new MissionParticipantsDao();
+public class MissionParticipantsServiceRest {
+	private MissionParticipantsService missionParticipantsService = new MissionParticipantsService();
 	
 	
 	@GET
 	@Path("/{userId}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response getActiveMissions(@PathParam("userId") int userId) throws SQLException {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
-			List<MissionParticipants> listMp = mpDao.getActiveMissionsByUserId(userId, entityManagerHandler);
+			List<MissionParticipants> listMp = missionParticipantsService.getActiveMissionsByUserId(userId);
 			if(listMp == null || listMp.isEmpty()) {
 				return Response.status(Response.Status.NO_CONTENT).build(); //no content 204
 			}
 			return Response.ok(listMp).build();
-		}
 	}
+	
 }

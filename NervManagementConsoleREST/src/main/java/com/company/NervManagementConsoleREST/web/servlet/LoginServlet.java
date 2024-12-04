@@ -17,6 +17,7 @@ import com.company.NervManagementConsoleREST.utils.Costants;
 public class LoginServlet extends HttpServlet {
 	
 	private final LoginService loginService = new LoginService();
+	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {		
 		try {			

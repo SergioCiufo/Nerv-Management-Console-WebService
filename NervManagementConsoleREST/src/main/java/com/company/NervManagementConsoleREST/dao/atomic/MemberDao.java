@@ -1,4 +1,4 @@
-package com.company.NervManagementConsoleREST.dao;
+package com.company.NervManagementConsoleREST.dao.atomic;
 
 import java.util.List;
 
