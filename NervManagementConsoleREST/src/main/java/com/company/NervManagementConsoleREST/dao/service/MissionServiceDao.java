@@ -15,7 +15,7 @@ public class MissionServiceDao {
 		this.missionDao = new MissionDao();
 	}
 	
-	public List<Mission> retrieveMissions() throws SQLException{
+	public List<Mission> retrieveMissions(){
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			return missionDao.retrieve(entityManagerHandler);
 		}

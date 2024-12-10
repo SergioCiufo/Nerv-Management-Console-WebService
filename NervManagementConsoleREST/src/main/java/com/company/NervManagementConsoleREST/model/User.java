@@ -32,11 +32,15 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "userId")
 	private Integer idUser;
+	@XmlElement(required = true, nillable = false) //soap per rendere il campo obbligatorio
 	private String name;
+	@XmlElement(required = true, nillable = false) //soap per rendere il campo obbligatorio
 	private String surname;
 	
+	@XmlElement(required = true, nillable = false) //soap per rendere il campo obbligatorio
 	@Column(unique = true, nullable = false)
 	private String username;
+	@XmlElement(required = true, nillable = false) //soap per rendere il campo obbligatorio
 	private String password;
 	
 	private Blob image;

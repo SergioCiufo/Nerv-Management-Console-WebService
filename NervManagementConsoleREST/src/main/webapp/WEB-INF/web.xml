@@ -4,6 +4,8 @@
   <welcome-file-list>
     <welcome-file>jsp/private/Home.jsp</welcome-file>
   </welcome-file-list>
+  
+  <!-- Configurazione Jersey REST -->
   <servlet>
     <servlet-name>jerseyServlet</servlet-name>
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
@@ -11,10 +13,24 @@
       <param-name>jersey.config.server.provider.packages</param-name>
       <param-value>com.company.NervManagementConsoleREST.serviceREST</param-value>
     </init-param>
+    <init-param>
+        <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+        <param-value>true</param-value>
+    </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
     <servlet-name>jerseyServlet</servlet-name>
     <url-pattern>/rest/*</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Configurazione SOAP -->
+  <servlet>
+    <servlet-name>MySoapService</servlet-name>
+    <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MySoapService</servlet-name>
+    <url-pattern>/soap/*</url-pattern>
   </servlet-mapping>
 </web-app>

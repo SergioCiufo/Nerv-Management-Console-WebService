@@ -13,7 +13,7 @@ public class MissionService {
 		this.missionServiceDao = new MissionServiceDao();
 	}
 	
-	public List<Mission> retrieveMissions() throws SQLException{
+	public List<Mission> retrieveMissions(){
 		return missionServiceDao.retrieveMissions();
 	}
 	

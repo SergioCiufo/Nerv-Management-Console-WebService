@@ -26,6 +26,12 @@ public class UserServiceDao {
 	    }
     }
     
+    public List<User> getUsersList() throws SQLException{
+    	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+        	return userDao.retrieve(entityManagerHandler);
+    	}
+    }
+    
     public User getUserByUsernameAndPassword(String username, String password)throws SQLException {
     	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
     		return userDao.getUserByUsernameAndPassword(username, password, entityManagerHandler);
@@ -65,4 +71,6 @@ public class UserServiceDao {
     		entityManagerHandler.commitTransaction();
     	}
     }
+    
+    //mettere per il register
 }

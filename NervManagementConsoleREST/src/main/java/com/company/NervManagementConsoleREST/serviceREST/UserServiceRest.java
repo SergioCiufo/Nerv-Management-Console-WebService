@@ -11,11 +11,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.company.NervManagementConsoleREST.model.User;
 import com.company.NervManagementConsoleREST.service.UserService;
+
 import com.company.NervManagementConsoleREST.service.RegisterService;
 
 @Path("/users")
@@ -35,11 +37,20 @@ public class UserServiceRest {
     //http://localhost:8080/NervManagementConsoleREST/users?name=Misato&surname=Katsuragi
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<User> getUsers(@QueryParam("name") String name,	
-    							@QueryParam("surname") String surname) throws SQLException{
-    	return userService.getUsersbyNameAndOrSurname(name, surname);   	
+    public Response getUsers(@QueryParam("name") String name,	
+    		@QueryParam("surname") String surname) throws SQLException{
+    	try {
+
+    		List<User>listaUtenti = userService.getUsersbyNameAndOrSurname(name, surname);   
+    		//GenericArrayType<User> genericListUser = new GenericArrayType<List<User>>(listaUtenti, getClass());
+    		GenericEntity<List<User>> userList = new GenericEntity<List<User>>(listaUtenti) {};
+    		return Response.status(200).entity(userList).build();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return Response.status(Response.Status.BAD_REQUEST).build();
+    	}
     }
-    
+
     @GET
     @Path("/username/{username}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -54,7 +65,8 @@ public class UserServiceRest {
     		registerService.register(u.getName(), u.getSurname(), u.getUsername(), u.getPassword());
     		return Response.status(Response.Status.NO_CONTENT).build(); //no content 204
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build(); //bad request ma andrebbe ampliato l'errore //tipo utente già esistente con questo username
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		//internal servel error meglio
 		}	
     }
     

@@ -20,6 +20,10 @@ public class UserService {
     	User newUser = new User(name, surname, username, password, defaultMembers);
         return userServiceDao.saveUser(newUser);
     }
+    
+    public List<User> getUsersList() throws SQLException{
+    	return userServiceDao.getUserList();
+    }
 
     public User getUserByUsernameAndPassword(String username, String password)throws SQLException {
     	User user =userServiceDao.getUserByUsernameAndPassword(username, password);

@@ -19,7 +19,7 @@ public class RegisterService {
 	}
 	
 	public void register(String name, String surname, String username, String password) throws SQLException {
-
+//si deve andare una volta sola nel dao
 			List<Member> defaultMembers = memberService.retrieveMembers();
 
 			User newUser = userService.createUser(name, surname, username, password, defaultMembers);

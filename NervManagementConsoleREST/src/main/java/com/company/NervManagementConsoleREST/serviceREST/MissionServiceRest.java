@@ -20,8 +20,10 @@ public class MissionServiceRest {
 
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public List<Mission> getMissions() throws SQLException {
+	public List<Mission> getMissions(){
 		return missionService.retrieveMissions();
+		//andrebbe gestita l'eccezione
+		//wrapping ecczione runtime
 	}
 
 	@POST

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.company.NervManagementConsoleREST.config.EntityManagerHandler;
+import com.company.NervManagementConsoleREST.exception.DatabaseException;
 import com.company.NervManagementConsoleREST.model.Mission;
 
 public class MissionDao implements DaoInterface<Mission> {
@@ -28,9 +29,14 @@ public class MissionDao implements DaoInterface<Mission> {
 	}
 	
 	public List<Mission> retrieve(EntityManagerHandler entityManagerHandler) {
-	    return entityManagerHandler.getEntityManager()
-    			.createQuery("FROM Mission ORDER BY missionId ASC", Mission.class)
-    			.getResultList();
+		try {
+			return entityManagerHandler.getEntityManager()
+	    			.createQuery("FROM Mission ORDER BY missionId ASC", Mission.class)
+	    			.getResultList();
+		} catch (Exception e) { //sqlexception ma eclipse rompe
+			throw new DatabaseException("Error while getting mission", e);
+		}
+	    
 	}
 	
 	public Mission getMissionById(int idMission, EntityManagerHandler entityManagerHandler) throws SQLException {
