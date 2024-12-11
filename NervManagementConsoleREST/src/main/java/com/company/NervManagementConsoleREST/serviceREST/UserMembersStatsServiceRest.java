@@ -20,7 +20,7 @@ public class UserMembersStatsServiceRest {
 	@GET
 	@Path("/{userId}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response getUserMembers(@PathParam("userId") int userId) throws SQLException { //tipo response per personalizzarci la risposta di errore 204 ex
+    public Response getUserMembers(@PathParam("userId") int userId) { //tipo response per personalizzarci la risposta di errore 204 ex
     		List<UserMembersStats> listUsm = userMemberStatsService.retrieveByUserId(userId);
             if(listUsm == null || listUsm.isEmpty()) {
             	 return Response.status(Response.Status.NO_CONTENT).build(); //no content 204

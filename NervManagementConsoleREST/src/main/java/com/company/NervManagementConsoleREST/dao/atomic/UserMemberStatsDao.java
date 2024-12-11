@@ -10,24 +10,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.company.NervManagementConsoleREST.config.EntityManagerHandler;
+import com.company.NervManagementConsoleREST.exception.DatabaseException;
 import com.company.NervManagementConsoleREST.model.Member;
 import com.company.NervManagementConsoleREST.model.User;
 import com.company.NervManagementConsoleREST.model.UserMembersStats;
 
 public class UserMemberStatsDao implements DaoInterface<UserMembersStats> {
-	private static final Logger logger = LoggerFactory.getLogger(UserDao.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserMemberStatsDao.class);
 	
 	public UserMemberStatsDao() {
 		super();
 	}
 	
 	@Override
-	public void create(UserMembersStats ref, EntityManagerHandler entityManagerHandler) throws SQLException {
+	public void create(UserMembersStats ref, EntityManagerHandler entityManagerHandler) {
 	    try {
 	    	entityManagerHandler.persist(ref);
 	    } catch (HibernateException e) {
 	        logger.error("Error adding member to user: " + ref.getUser().getIdUser() + e.getMessage());
-	        throw e;
+	        throw new DatabaseException("Unexpected error adding member to user: " + ref.getUser().getIdUser(), e);
 	    }
 	}
 	
@@ -39,11 +40,11 @@ public class UserMemberStatsDao implements DaoInterface<UserMembersStats> {
 	    	
 	    } catch (HibernateException e) {
 	        logger.error("Error retrieving UserMembersStats: " + e.getMessage());
-	        throw new RuntimeException("Unexpected error during retrieval", e);
+	        throw new DatabaseException("Unexpected error retrieving UserMembersStats" , e);
 	    }
 	}
 	
-	public List<UserMembersStats> retrieveByUserId(int userId, EntityManagerHandler entityManagerHandler)throws SQLException {
+	public List<UserMembersStats> retrieveByUserId(int userId, EntityManagerHandler entityManagerHandler) {
 		try {
 			return entityManagerHandler.getEntityManager()
 					.createQuery("FROM UserMembersStats ums WHERE ums.user.id = :userId", UserMembersStats.class)
@@ -54,11 +55,11 @@ public class UserMemberStatsDao implements DaoInterface<UserMembersStats> {
 	        return null;
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        throw new RuntimeException("Unexpected error during retrieval", e);
+	        throw new DatabaseException("Unexpected error retrieving by userId: " +userId , e);
 	    }
 	}
 
-	public UserMembersStats retrieveByUserAndMember(User user, Member member, EntityManagerHandler entityManagerHandler)throws SQLException {
+	public UserMembersStats retrieveByUserAndMember(User user, Member member, EntityManagerHandler entityManagerHandler) {
 		try {
 			return entityManagerHandler.getEntityManager()
 					.createQuery("FROM UserMembersStats ums WHERE ums.user.id = :userId AND ums.member.id = :memberId ", UserMembersStats.class)
@@ -70,11 +71,11 @@ public class UserMemberStatsDao implements DaoInterface<UserMembersStats> {
 	        return null;
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        throw new RuntimeException("Unexpected error during retrieval", e);
+	        throw new DatabaseException("Unexpected error retrieving user and member by userId: " +user.getIdUser() , e);
 	    }
 	}
 	
-    public UserMembersStats retrieveByUserAndMemberId(User user, Integer memberId, EntityManagerHandler entityManagerHandler)throws SQLException  {
+    public UserMembersStats retrieveByUserAndMemberId(User user, Integer memberId, EntityManagerHandler entityManagerHandler) {
 		try {
 			return entityManagerHandler.getEntityManager()
 					.createQuery("FROM UserMembersStats ums "
@@ -87,11 +88,11 @@ public class UserMemberStatsDao implements DaoInterface<UserMembersStats> {
 	        return null;
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        throw new RuntimeException("Unexpected error during retrieval", e);
+	        throw new DatabaseException("Unexpected error retrieving by userId: " +user.getIdUser() + " and MemberId: "+memberId , e);
 	    }
     }
 
-    public void updateMembStatsStartSim (User user, Member member, EntityManagerHandler entityManagerHandler) throws SQLException {
+    public void updateMembStatsStartSim (User user, Member member, EntityManagerHandler entityManagerHandler) {
     	try {
     		entityManagerHandler.getEntityManager()
     		.createQuery("UPDATE UserMembersStats ums "
@@ -103,11 +104,11 @@ public class UserMemberStatsDao implements DaoInterface<UserMembersStats> {
     		.executeUpdate();
 		} catch (HibernateException e) {
 	        logger.error("Error updating member stats, idUser: " + user.getIdUser() + " memberId: " + member.getIdMember() + e.getMessage());
-	        throw new SQLException("Error updating member stats", e);
+	        throw new DatabaseException("Unexpected error updating MemberStats by userId: " +user.getIdUser() + "member: "+member.getIdMember() , e);
 		}
     }
     
-    public void updateMembStatsCompletedSim (User user, Member member, UserMembersStats ums, EntityManagerHandler entityManagerHandler) throws SQLException {
+    public void updateMembStatsCompletedSim (User user, Member member, UserMembersStats ums, EntityManagerHandler entityManagerHandler) {
     	try {
     		entityManagerHandler.getEntityManager()
     		.createQuery("UPDATE UserMembersStats ums "
@@ -126,16 +127,16 @@ public class UserMemberStatsDao implements DaoInterface<UserMembersStats> {
     		.executeUpdate();
 		} catch (HibernateException e) {
 	        logger.error("Error updating stats member, idUser: " + user.getIdUser() + " memberId: " + member.getIdMember() + e.getMessage());
-	        throw new SQLException("Error updating member stats", e);
+	        throw new DatabaseException("Unexpected error updating MemberStats by userId: " +user.getIdUser() + "member: "+member.getIdMember() , e);
 		}
     }
 
-    public void updateMembStatsCompletedMission(UserMembersStats uMemberStats, EntityManagerHandler entityManagerHandler) throws SQLException {
+    public void updateMembStatsCompletedMission(UserMembersStats uMemberStats, EntityManagerHandler entityManagerHandler) {
         try {
             entityManagerHandler.getEntityManager().merge(uMemberStats);
         } catch (HibernateException e) {
         	logger.error("Error updating stats member, idUser: " + uMemberStats.getUser().getIdUser() + "memberid: " + uMemberStats.getMember().getIdMember() + e.getMessage());
-	        throw new SQLException("Error updating member stats", e);
+	        throw new DatabaseException("Unexpected error updating MemberStats by Id: " +uMemberStats.getIdMemberStats() , e);
 		}
     }
     

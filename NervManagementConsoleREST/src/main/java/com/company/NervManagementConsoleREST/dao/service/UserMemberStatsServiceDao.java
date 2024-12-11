@@ -17,7 +17,7 @@ public class UserMemberStatsServiceDao {
 		this.userMemberStatsDao = new UserMemberStatsDao();
 	}
 	
-	public void saveStats(UserMembersStats stats) throws SQLException {
+	public void saveStats(UserMembersStats stats) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			userMemberStatsDao.create(stats, entityManagerHandler);
@@ -25,13 +25,13 @@ public class UserMemberStatsServiceDao {
 		}
 	}
 	
-	public UserMembersStats retrieveStatsByUserAndMember(User user, Member member) throws SQLException {
+	public UserMembersStats retrieveStatsByUserAndMember(User user, Member member) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			return userMemberStatsDao.retrieveByUserAndMember(user, member, entityManagerHandler);
 		}
 	}
 	
-	public void updateMembStatsStartSim(User user, Member member) throws SQLException{
+	public void updateMembStatsStartSim(User user, Member member) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			userMemberStatsDao.updateMembStatsStartSim(user, member, entityManagerHandler);
@@ -39,7 +39,7 @@ public class UserMemberStatsServiceDao {
 		}
 	}
 	
-	public void updateMembStatsCompletedSim(User user, Member member, UserMembersStats ums) throws SQLException{
+	public void updateMembStatsCompletedSim(User user, Member member, UserMembersStats ums){
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			userMemberStatsDao.updateMembStatsCompletedSim(user, member, ums, entityManagerHandler);
@@ -47,7 +47,7 @@ public class UserMemberStatsServiceDao {
 		}
 	}
 	
-	public void updateMembStatsCompletedMission(UserMembersStats ums) throws SQLException{
+	public void updateMembStatsCompletedMission(UserMembersStats ums) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			userMemberStatsDao.updateMembStatsCompletedMission(ums, entityManagerHandler);
@@ -55,7 +55,7 @@ public class UserMemberStatsServiceDao {
 		}
 	}
 	
-	 public List<UserMembersStats> retrieveByUserId(int userId) throws SQLException{
+	 public List<UserMembersStats> retrieveByUserId(int userId) {
 		 try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			 return userMemberStatsDao.retrieveByUserId(userId, entityManagerHandler);
 		 }

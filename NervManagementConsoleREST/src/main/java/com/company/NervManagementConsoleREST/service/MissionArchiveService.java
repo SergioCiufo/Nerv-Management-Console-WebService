@@ -16,23 +16,23 @@ public class MissionArchiveService {
 		this.missionArchiveServiceDao = new MissionArchiveServiceDao();
 	}
 	
-	public List<MissionArchive> retriveByUserIdAndIdMission(User user, Mission mission) throws SQLException{
+	public List<MissionArchive> retriveByUserIdAndIdMission(User user, Mission mission) {
 		return missionArchiveServiceDao.retriveByUserIdAndIdMission(user, mission);
 	}
 	
-	public void addMissionArchive(MissionArchive missionArchive) throws SQLException{
+	public void addMissionArchive(MissionArchive missionArchive) {
 		missionArchiveServiceDao.addMissionArchive(missionArchive);
 	}
 	
-	public MissionArchive retriveByUserIdAndIdMissionResultProgress (User user, Mission mission) throws SQLException{
+	public MissionArchive retriveByUserIdAndIdMissionResultProgress (User user, Mission mission) {
 		return missionArchiveServiceDao.retriveByUserIdAndIdMissionResultProgress(user, mission);
 	}
 	
-	public void updateMissionResult (MissionArchive missionArchive, MissionResult missionResult) throws SQLException{
+	public void updateMissionResult (MissionArchive missionArchive, MissionResult missionResult) {
 		missionArchiveServiceDao.updateMissionResult(missionArchive, missionResult);
 	}
 	
-	public List<MissionArchive> retriveByUserId (int userId) throws SQLException{
+	public List<MissionArchive> retriveByUserId (int userId) {
 		return missionArchiveServiceDao.retriveByUserId(userId);
 	}
 }

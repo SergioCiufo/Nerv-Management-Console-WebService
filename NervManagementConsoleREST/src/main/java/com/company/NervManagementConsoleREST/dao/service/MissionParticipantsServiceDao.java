@@ -23,7 +23,7 @@ public class MissionParticipantsServiceDao {
 		}
 	}
 	
-	public void startMission(MissionParticipants missionParticipants) throws SQLException{
+	public void startMission(MissionParticipants missionParticipants) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			missionParticipantsDao.startMission(missionParticipants, entityManagerHandler);
@@ -31,7 +31,7 @@ public class MissionParticipantsServiceDao {
 		}
 	}
 	
-	public void removeParticipant(User user, Mission mission) throws SQLException{
+	public void removeParticipant(User user, Mission mission){
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			missionParticipantsDao.removeParticipant(user, mission, entityManagerHandler);
@@ -39,7 +39,7 @@ public class MissionParticipantsServiceDao {
 		}
 	}
 	
-	public List<MissionParticipants> getActiveMissionsByUserId (int userId) throws SQLException{
+	public List<MissionParticipants> getActiveMissionsByUserId (int userId) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			return missionParticipantsDao.getActiveMissionsByUserId(userId, entityManagerHandler);
 		}

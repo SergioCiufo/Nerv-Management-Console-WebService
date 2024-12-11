@@ -23,7 +23,7 @@ public class RetriveInformationService {
 	private MissionParticipantsService missionParticipantsService;
 	private MissionArchiveService missionArchiveService;
 
-	
+	//non serve mettterlo nel dao //non ci sono problemi transazionali //chiamate in get
 	public RetriveInformationService() {
 		super();
 		this.memberService=new MemberService();

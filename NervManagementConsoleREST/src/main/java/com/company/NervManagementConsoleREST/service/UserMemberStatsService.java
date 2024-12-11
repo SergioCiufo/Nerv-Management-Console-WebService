@@ -24,7 +24,7 @@ public class UserMemberStatsService {
         this.userMemberStatsServiceDao = new UserMemberStatsServiceDao();
     }
 
-    public void createStatsForDefaultMembers(User user, List<Member> members) throws SQLException {
+    public void createStatsForDefaultMembers(User user, List<Member> members) {
         for (Member member : members) {
             if (member.getIdMember() != null) {
                 UserMembersStats stats = MemberStatsAddUtils.createStatsMembers(user, member);
@@ -36,33 +36,24 @@ public class UserMemberStatsService {
         }
     }
     
-    public UserMembersStats retrieveStatsByUserAndMember(User user, Member member) throws SQLException {
+    public UserMembersStats retrieveStatsByUserAndMember(User user, Member member) {
     	return userMemberStatsServiceDao.retrieveStatsByUserAndMember(user, member);
     }
     
-    public void updateMembStatsStartSim(User user, Member member) throws SQLException{
+    public void updateMembStatsStartSim(User user, Member member) {
 		userMemberStatsServiceDao.updateMembStatsStartSim(user, member);
 	}
     
-    public void updateMembStatsCompletedSim(User user, Member member, UserMembersStats ums) throws SQLException{
+    public void updateMembStatsCompletedSim(User user, Member member, UserMembersStats ums) {
     	userMemberStatsServiceDao.updateMembStatsCompletedSim(user, member, ums);
     }
     
-    public void updateMembStatsCompletedMission(UserMembersStats ums) throws SQLException{
+    public void updateMembStatsCompletedMission(UserMembersStats ums) {
     	userMemberStatsServiceDao.updateMembStatsCompletedMission(ums);
     }
     
-    public List<UserMembersStats> retrieveByUserId(int userId) throws SQLException{
+    public List<UserMembersStats> retrieveByUserId(int userId){
     	return userMemberStatsServiceDao.retrieveByUserId(userId);
     }
-    
-    /*
-    public User recoverMemberStats(User user, EntityManagerHandler entityManagerHandler) throws SQLException {
-        for (Member member : user.getMembers()) {
-            UserMembersStats stats = userMemberStatsDao.retrieveByUserAndMemberId(user, member.getIdMember(), entityManagerHandler);
-            member.setMemberStats(stats);
-        }
-        return user;
-    }
-    */
+  
 }

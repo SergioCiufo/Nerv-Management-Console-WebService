@@ -17,24 +17,12 @@ public class MemberService {
         this.memberServiceDao = new MemberServiceDao();
     }
 
-    public List<Member> retrieveMembers() throws SQLException {
+    public List<Member> retrieveMembers() {
     	return memberServiceDao.retrieveMembers();
     }
     
-    public Member retrieveByMemberId (int idMember) throws SQLException {
+    public Member retrieveByMemberId (int idMember) {
     	return memberServiceDao.retrieveByMemberId(idMember);
     }
-    
-    
-    /*
-    public List<Member> retrieveMembersWithStats(User user, EntityManagerHandler entityManagerHandler) throws SQLException {
-        List<Member> members = memberDao.retrieve(entityManagerHandler);
-        for (Member member : members) {
-            UserMembersStats stats = userMemberStatsDao.retrieveByUserAndMember(user, member, entityManagerHandler);
-            member.setMemberStats(stats);
-        }
-        return members;
-    }
-    */
     
 }

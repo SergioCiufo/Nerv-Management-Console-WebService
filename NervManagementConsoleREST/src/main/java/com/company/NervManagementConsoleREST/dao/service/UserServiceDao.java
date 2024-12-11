@@ -2,7 +2,6 @@ package com.company.NervManagementConsoleREST.dao.service;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.company.NervManagementConsoleREST.config.EntityManagerHandler;
 import com.company.NervManagementConsoleREST.config.JpaUtil;
@@ -16,7 +15,7 @@ public class UserServiceDao {
         this.userDao = new UserDao();
     }
 
-    public User saveUser(User newUser) throws SQLException {
+    public User saveUser(User newUser) {
     	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
     		entityManagerHandler.beginTransaction();
 	        userDao.create(newUser, entityManagerHandler);	
@@ -26,31 +25,37 @@ public class UserServiceDao {
 	    }
     }
     
-    public User getUserByUsernameAndPassword(String username, String password)throws SQLException {
+    public List<User> getUsersList() {
+    	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+        	return userDao.retrieve(entityManagerHandler);
+    	}
+    }
+    
+    public User getUserByUsernameAndPassword(String username, String password) {
     	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
     		return userDao.getUserByUsernameAndPassword(username, password, entityManagerHandler);
     	}
     }
     
-    public User getUserById(int userId) throws SQLException { //va fatto così? entity qui
+    public User getUserById(int userId) {
     	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
     		return userDao.getUserById(userId, entityManagerHandler);
     	}
     }
     
-    public User getUserByUsername(String username) throws SQLException {
+    public User getUserByUsername(String username) {
     	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
     		return userDao.getUserByUsername(username, entityManagerHandler);
     	}
     }
     
-    public List<User> getUserList() throws SQLException{
+    public List<User> getUserList() {
     	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
     		return userDao.retrieve(entityManagerHandler);
     	}
     }
     
-    public void updateUser(User u) throws SQLException {
+    public void updateUser(User u) {
     	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
     		entityManagerHandler.beginTransaction();
     		userDao.updateUser(u, entityManagerHandler);
@@ -58,11 +63,12 @@ public class UserServiceDao {
     	}
     }
     
-    public void removeUser(int userId) throws SQLException {
+    public void removeUser(int userId) {
     	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
     		entityManagerHandler.beginTransaction();
     		userDao.removeUser(userId, entityManagerHandler);
     		entityManagerHandler.commitTransaction();
     	}
     }
+    
 }

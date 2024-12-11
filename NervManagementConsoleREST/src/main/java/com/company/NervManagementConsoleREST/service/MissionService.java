@@ -13,19 +13,19 @@ public class MissionService {
 		this.missionServiceDao = new MissionServiceDao();
 	}
 	
-	public List<Mission> retrieveMissions() throws SQLException{
+	public List<Mission> retrieveMissions(){
 		return missionServiceDao.retrieveMissions();
 	}
 	
-	public Mission getMissionById(int idMission) throws SQLException{
+	public Mission getMissionById(int idMission) {
 		return missionServiceDao.getMissionById(idMission);
 	}
 	
-	public void addMission(Mission mission) throws SQLException{
+	public void addMission(Mission mission) {
 		missionServiceDao.addMission(mission);
 	}
 	
-	public void updateMission(Mission mission) throws SQLException{
+	public void updateMission(Mission mission) {
 		missionServiceDao.updateMission(mission);
 	}
 

@@ -17,19 +17,19 @@ public class SimulationServiceDao {
 		this.simulationDao = new SimulationDao();
 	}
 	
-	public List<Simulation> retrieveSimulations() throws SQLException{
+	public List<Simulation> retrieveSimulations() {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			return simulationDao.retrieve(entityManagerHandler);
 		}
 	}
 	
-	public List<Simulation> getSimulationAndParticipantsByUserId(User user) throws SQLException{
+	public List<Simulation> getSimulationAndParticipantsByUserId(User user) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			return simulationDao.getSimulationAndParticipantsByUserId(user, entityManagerHandler);
 		}
 	}
 	
-	public Simulation retrieveBySimulationId(int simulationId) throws SQLException{
+	public Simulation retrieveBySimulationId(int simulationId) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			return simulationDao.retrieveBySimulationId(simulationId, entityManagerHandler);
 		}

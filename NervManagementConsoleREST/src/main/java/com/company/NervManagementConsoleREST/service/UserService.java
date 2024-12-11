@@ -16,27 +16,31 @@ public class UserService {
     }
     
     public User createUser(String name, String surname, String username, String password,
-    					List<Member> defaultMembers) throws SQLException {
+    					List<Member> defaultMembers) {
     	User newUser = new User(name, surname, username, password, defaultMembers);
         return userServiceDao.saveUser(newUser);
     }
+    
+    public List<User> getUsersList(){
+    	return userServiceDao.getUserList();
+    }
 
-    public User getUserByUsernameAndPassword(String username, String password)throws SQLException {
+    public User getUserByUsernameAndPassword(String username, String password) {
     	User user =userServiceDao.getUserByUsernameAndPassword(username, password);
     	return user;
     }
     
-    public User getUserById(int userId) throws SQLException {
+    public User getUserById(int userId) {
     	User user = userServiceDao.getUserById(userId);
     	return user;
     }
     
-    public User getUserByUsername(String username) throws SQLException {
+    public User getUserByUsername(String username) {
     	User user = userServiceDao.getUserByUsername(username);
     	return user;
     }
     
-    public List<User> getUsersbyNameAndOrSurname(String name, String surname) throws SQLException {
+    public List<User> getUsersbyNameAndOrSurname(String name, String surname) {
     		List<User> listUsers = userServiceDao.getUserList();
     		if(name != null) {
     			listUsers = listUsers.stream()
@@ -51,11 +55,11 @@ public class UserService {
     		return listUsers;
     }
     
-    public void updateUser(User u) throws SQLException{
+    public void updateUser(User u){
     	userServiceDao.updateUser(u);
     }
     
-    public void removeUser(int userId) throws SQLException{
+    public void removeUser(int userId){
     	userServiceDao.removeUser(userId);
     }
     

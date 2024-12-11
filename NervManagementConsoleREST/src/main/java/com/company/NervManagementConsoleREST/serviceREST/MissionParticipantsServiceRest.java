@@ -21,7 +21,7 @@ public class MissionParticipantsServiceRest {
 	@GET
 	@Path("/{userId}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response getActiveMissions(@PathParam("userId") int userId) throws SQLException {
+	public Response getActiveMissions(@PathParam("userId") int userId) {
 			List<MissionParticipants> listMp = missionParticipantsService.getActiveMissionsByUserId(userId);
 			if(listMp == null || listMp.isEmpty()) {
 				return Response.status(Response.Status.NO_CONTENT).build(); //no content 204

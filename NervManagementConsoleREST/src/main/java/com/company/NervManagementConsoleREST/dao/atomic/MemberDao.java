@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.company.NervManagementConsoleREST.config.EntityManagerHandler;
+import com.company.NervManagementConsoleREST.exception.DatabaseException;
 import com.company.NervManagementConsoleREST.model.Member;
 
 public class MemberDao implements DaoInterface<Member> {
@@ -26,7 +27,7 @@ public class MemberDao implements DaoInterface<Member> {
 	    	
 	    } catch (HibernateException e) {
 	        logger.error("Error retrieving members: " + e.getMessage());
-	        throw new RuntimeException("Unexpected error during retrieval", e);
+	        throw new DatabaseException("Unexpected error during retrieval", e);
 	    }
 	}
 	
@@ -42,7 +43,7 @@ public class MemberDao implements DaoInterface<Member> {
 	        return null;
 	    } catch (HibernateException e) {
 	        logger.error("Error retrieving member: " + memberId + " " + e.getMessage());
-	        throw new RuntimeException("Unexpected error during retrieval", e);
+	        throw new DatabaseException("Error retrieving member: " + memberId + " ", e);
 	    }
 	}
 

@@ -15,15 +15,15 @@ public class SimulationParticipantsService {
 		this.simulationParticipantsServiceDao = new SimulationParticipantsServiceDao();
 	}
 	
-	public void createParticipant(SimulationParticipant simulationParticipant) throws SQLException{
+	public void createParticipant(SimulationParticipant simulationParticipant) {
 		simulationParticipantsServiceDao.createParticipant(simulationParticipant);
 	}
 	
-	public SimulationParticipant getParticipantbyUserAndMemberId(User user, Member member) throws SQLException{
+	public SimulationParticipant getParticipantbyUserAndMemberId(User user, Member member) {
 		return simulationParticipantsServiceDao.getParticipantbyUserAndMemberId(user, member);
 	}
 	
-	public void removeParticipant(User user, Simulation simulation) throws SQLException{
+	public void removeParticipant(User user, Simulation simulation) {
 		simulationParticipantsServiceDao.removeParticipant(user, simulation);
 	}
 	

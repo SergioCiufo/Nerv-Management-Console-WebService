@@ -20,7 +20,7 @@ public class MissionArchiveServiceRest {
 	@GET
 	@Path("/{userId}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response getArchiveMissions(@PathParam("userId") int userId) throws SQLException {
+	public Response getArchiveMissions(@PathParam("userId") int userId) {
 			List<MissionArchive> listMa = missionArchiveService.retriveByUserId(userId);
 			if(listMa == null || listMa.isEmpty()) {
 				return Response.status(Response.Status.NO_CONTENT).build(); //no content 204
