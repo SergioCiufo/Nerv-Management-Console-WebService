@@ -15,19 +15,19 @@ public class MissionParticipantsService {
 		this.missionParticipantsServiceDao = new MissionParticipantsServiceDao();
 	}
 	
-	public List<MissionParticipants> getMissionParticipantsByUserIdAndMissionId (User user, Mission mission) throws SQLException{
+	public List<MissionParticipants> getMissionParticipantsByUserIdAndMissionId (User user, Mission mission) {
 		return missionParticipantsServiceDao.getMissionParticipantsByUserIdAndMissionId(user, mission);
 	}
 	
-	public void startMission(MissionParticipants missionParticipants) throws SQLException{
+	public void startMission(MissionParticipants missionParticipants) {
 		missionParticipantsServiceDao.startMission(missionParticipants);
 	}
 	
-	public void removeParticipant(User user, Mission mission) throws SQLException{
+	public void removeParticipant(User user, Mission mission) {
 		missionParticipantsServiceDao.removeParticipant(user, mission);
 	}
 	
-	public List<MissionParticipants> getActiveMissionsByUserId (int userId) throws SQLException{
+	public List<MissionParticipants> getActiveMissionsByUserId (int userId) {
 		return missionParticipantsServiceDao.getActiveMissionsByUserId(userId);
 	}
 

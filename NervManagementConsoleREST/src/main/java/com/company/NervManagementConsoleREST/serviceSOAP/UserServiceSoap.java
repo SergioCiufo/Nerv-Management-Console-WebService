@@ -23,7 +23,7 @@ public class UserServiceSoap {
 	}
 	
 	@WebMethod(operationName = "addUser")
-	public Response addUser(@WebParam(name = "user") User u) throws SQLException {
+	public Response addUser(@WebParam(name = "user") User u) {
 		try {
 			registerService.register(u.getName(), u.getSurname(), u.getUsername(), u.getPassword());
 			return Response.status(Response.Status.CREATED).build();
@@ -34,7 +34,7 @@ public class UserServiceSoap {
 	}
 	
 	@WebMethod(operationName = "updateUser")
-	public Response updateUser(@WebParam(name = "user") User u) throws SQLException {
+	public Response updateUser(@WebParam(name = "user") User u) {
 		try {
 			userService.updateUser(u);
 			return Response.status(Response.Status.OK).build();
@@ -44,7 +44,7 @@ public class UserServiceSoap {
 	}
 	
 	@WebMethod(operationName = "deleteUser")
-	public Response deleteUser(@WebParam(name = "userId") int userId) throws SQLException {
+	public Response deleteUser(@WebParam(name = "userId") int userId) {
 		try {
 			userService.removeUser(userId);
 			return Response.status(Response.Status.NO_CONTENT).build();

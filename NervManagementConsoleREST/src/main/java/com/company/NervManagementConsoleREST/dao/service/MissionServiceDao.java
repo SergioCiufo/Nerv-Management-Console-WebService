@@ -21,13 +21,13 @@ public class MissionServiceDao {
 		}
 	}
 	
-	public Mission getMissionById(int idMission) throws SQLException{
+	public Mission getMissionById(int idMission) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			return missionDao.getMissionById(idMission, entityManagerHandler);
 		}
 	}
 	
-	public void addMission(Mission mission) throws SQLException{
+	public void addMission(Mission mission) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			missionDao.create(mission, entityManagerHandler);
@@ -35,7 +35,7 @@ public class MissionServiceDao {
 		}
 	}
 	
-	public void updateMission (Mission mission) throws SQLException{
+	public void updateMission (Mission mission) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			missionDao.updateMission(mission, entityManagerHandler);

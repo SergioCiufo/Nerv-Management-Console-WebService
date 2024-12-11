@@ -43,6 +43,7 @@ public class User {
 	@XmlElement(required = true, nillable = false) //soap per rendere il campo obbligatorio
 	private String password;
 	
+	@XmlTransient
 	private Blob image;
 	
 	@XmlTransient //questa annotazione non fa vedere in xml questo attributo come risultato rest
@@ -251,14 +252,14 @@ public class User {
 	
 	//Metodo per ottenere l'immagine in formato Base64
 	@JsonProperty("image")
-	@XmlElement(name = "image")
+	//@XmlElement(name = "image")
 	public String getImageAsBase64() {
 		return BlobConverter.blobToBase64(this.image);
 	}
 	
 	//Metodo per impostare l'immagine da una stringa Base64
 	@JsonProperty("image")
-	@XmlElement(name = "image")
+	//@XmlElement(name = "image")
 	public void setImageFromBase64(String base64Image) {
         this.image = BlobConverter.base64ToBlob(base64Image);
     }

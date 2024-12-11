@@ -28,7 +28,7 @@ public class MissionServiceRest {
 
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response addMission(Mission mission) throws SQLException {
+	public Response addMission(Mission mission) {
 		try {
 			missionService.addMission(mission);
 			return Response.status(Response.Status.NO_CONTENT).build(); //no content 204
@@ -39,7 +39,7 @@ public class MissionServiceRest {
 
 	@PUT
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response updateMission(Mission mission) throws SQLException {
+	public Response updateMission(Mission mission) {
 		try {
 			missionService.updateMission(mission);
 			return Response.status(Response.Status.NO_CONTENT).build(); //no content 204

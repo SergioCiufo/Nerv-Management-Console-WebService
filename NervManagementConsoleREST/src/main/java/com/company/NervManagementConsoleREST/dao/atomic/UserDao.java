@@ -1,6 +1,5 @@
 package com.company.NervManagementConsoleREST.dao.atomic;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -10,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.company.NervManagementConsoleREST.config.EntityManagerHandler;
+import com.company.NervManagementConsoleREST.exception.DatabaseException;
 import com.company.NervManagementConsoleREST.model.User;
 
 
@@ -21,12 +21,12 @@ public class UserDao implements DaoInterface<User> {
 	}
 
 	@Override
-	public void create(User ref, EntityManagerHandler entityManagerHandler) throws SQLException {
+	public void create(User ref, EntityManagerHandler entityManagerHandler) {
 	    try {
 	    	entityManagerHandler.persist(ref);
 	    } catch (HibernateException e) {
 	        logger.error("Error adding user: " + ref + e.getMessage());
-	        throw e;
+	        throw new DatabaseException("Unexpected error create user" + ref.getUsername(), e);
 	    }
 	}
 	
@@ -38,11 +38,11 @@ public class UserDao implements DaoInterface<User> {
 	    	
 	    } catch (HibernateException e) {
 	        logger.error("Error retrieving Users: " + e.getMessage());
-	        throw new RuntimeException("Unexpected error during retrieval", e);
+	        throw new DatabaseException("Unexpected error during retrieval", e);
 	    }
 	}
 	
-	public User getUserById(int userId, EntityManagerHandler entityManagerHandler) throws SQLException {
+	public User getUserById(int userId, EntityManagerHandler entityManagerHandler) {
 		try {
 	        return entityManagerHandler.getEntityManager()
 	        .createQuery("SELECT u FROM User u WHERE u.idUser = :userId", User.class)
@@ -53,11 +53,11 @@ public class UserDao implements DaoInterface<User> {
 	        return null;
 	    } catch (HibernateException e) {
 	        logger.error("Error retrieving user: " + userId + e.getMessage());
-	        throw new SQLException("Error retrieving user by id", e);
+	        throw new DatabaseException("Unexpected error during retrieval by userId" +userId, e);
 	    }
 	}
 
-	public User getUserByUsernameAndPassword(String username, String password, EntityManagerHandler entityManagerHandler) throws SQLException {
+	public User getUserByUsernameAndPassword(String username, String password, EntityManagerHandler entityManagerHandler) {
 	    try {
 	        return entityManagerHandler.getEntityManager()
 	    		    .createQuery("FROM User u WHERE LOWER(u.username) = :username AND u.password = :password", User.class)
@@ -69,11 +69,11 @@ public class UserDao implements DaoInterface<User> {
 	        return null;
 	    }catch (HibernateException e) {
 	        logger.error("Error retrieving user: " + username + e.getMessage());
-	        throw new SQLException("Error retrieving user by username and password", e);
+	        throw new DatabaseException("Unexpected error during retrieval username: "+ username, e);
 	    }
 	}
 
-	public User getUserByUsername(String usernamePar, EntityManagerHandler entityManagerHandler) throws SQLException {
+	public User getUserByUsername(String usernamePar, EntityManagerHandler entityManagerHandler) {
 		try {
 	        return entityManagerHandler.getEntityManager()
 	                .createQuery("select x from User x where x.username=:parUser", User.class)
@@ -84,13 +84,12 @@ public class UserDao implements DaoInterface<User> {
 	        return null;
 	    } catch (HibernateException e) {
 	        logger.error("Error retrieving user: " + usernamePar + e.getMessage());
-	        throw new SQLException("Error retrieving user by username", e);
+	        throw new DatabaseException("Unexpected error during retrieval by username: " + usernamePar, e);
 	    }
 	}
 	
-	public void updateUser(User user, EntityManagerHandler entityManagerHandler) throws SQLException {
+	public void updateUser(User user, EntityManagerHandler entityManagerHandler) {
 		try {
-			//entityManagerHandler.getEntityManager().merge(user);
 			entityManagerHandler.getEntityManager()
 		    .createQuery("UPDATE User u " +
 		                 "SET u.name = :name, " +
@@ -108,11 +107,11 @@ public class UserDao implements DaoInterface<User> {
 		    .executeUpdate();
 		} catch (HibernateException e) {
 	        logger.error("Error updating user by idUser: " + user.getIdUser() + e.getMessage());
-	        throw new SQLException("Error updating user", e);
+	        throw new DatabaseException("Unexpected error during updating user: " + user.getIdUser(), e);
 		}
 	}
 	
-	public void removeUser(int userId, EntityManagerHandler entityManagerHandler) throws SQLException {
+	public void removeUser(int userId, EntityManagerHandler entityManagerHandler) {
 	    try {
 	    	//prossima volta cascata sul model, anziché ammazzarsi così
 	    	entityManagerHandler.getEntityManager()
@@ -142,7 +141,7 @@ public class UserDao implements DaoInterface<User> {
 	        .executeUpdate();
 	    } catch (HibernateException e) {
 	        logger.error("Error removing user for userId: " + userId, e);
-	        throw new SQLException("Error removing user", e);
+	        throw new DatabaseException("Unexpected error during removing User: " + userId, e);
 	    }
 	}
 		

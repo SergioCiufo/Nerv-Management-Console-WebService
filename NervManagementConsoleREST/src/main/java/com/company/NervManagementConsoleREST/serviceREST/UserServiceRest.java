@@ -38,29 +38,29 @@ public class UserServiceRest {
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getUsers(@QueryParam("name") String name,	
-    		@QueryParam("surname") String surname) throws SQLException{
+    		@QueryParam("surname") String surname) {
     	try {
 
-    		List<User>listaUtenti = userService.getUsersbyNameAndOrSurname(name, surname);   
-    		//GenericArrayType<User> genericListUser = new GenericArrayType<List<User>>(listaUtenti, getClass());
-    		GenericEntity<List<User>> userList = new GenericEntity<List<User>>(listaUtenti) {};
+    		List<User>userList = userService.getUsersbyNameAndOrSurname(name, surname);   
+    		//xml per far uscire le liste usiamo il generic
+    		GenericEntity<List<User>> genricuserList = new GenericEntity<List<User>>(userList) {};
     		return Response.status(200).entity(userList).build();
     	} catch (Exception e) {
     		e.printStackTrace();
-    		return Response.status(Response.Status.BAD_REQUEST).build();
+    		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
     	}
     }
 
     @GET
     @Path("/username/{username}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public User getUserByUsername(@PathParam("username") String username) throws SQLException {
+    public User getUserByUsername(@PathParam("username") String username) {
     	return userService.getUserByUsername(username);
     }
     
     @POST
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response addUser(User u) throws SQLException {
+    public Response addUser(User u) {
     	try {
     		registerService.register(u.getName(), u.getSurname(), u.getUsername(), u.getPassword());
     		return Response.status(Response.Status.NO_CONTENT).build(); //no content 204
@@ -72,24 +72,24 @@ public class UserServiceRest {
     
     @PUT
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response updateUser(User u) throws SQLException {
+    public Response updateUser(User u) {
     	try {
     		userService.updateUser(u);
     		return Response.status(Response.Status.NO_CONTENT).build(); //no content 204
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build(); //bad request ma andrebbe ampliato l'errore //tipo utente già esistente con questo username
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}	
     }
     
     @DELETE
     @Path("/{userId}/delete")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response deleteUser(@PathParam("userId") int userId) throws SQLException {
+    public Response deleteUser(@PathParam("userId") int userId) {
     	try {
     		userService.removeUser(userId);
     		return Response.status(Response.Status.NO_CONTENT).build(); //no content 204
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build(); //bad request ma andrebbe ampliato l'errore //tipo utente già esistente con questo username
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}	
     	
     }

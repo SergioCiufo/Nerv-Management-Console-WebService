@@ -22,9 +22,9 @@ public class MissionDao implements DaoInterface<Mission> {
 	public void create(Mission ref, EntityManagerHandler entityManagerHandler) {
 		try {
 			entityManagerHandler.persist(ref);
-		} catch (Exception e) {
+		} catch (HibernateException e) {
 			logger.error("Error adding mission: " + ref + e.getMessage());
-			throw e;
+			throw new DatabaseException("Unexpected error create mission" + ref.getMissionId(), e);
 		}
 	}
 	
@@ -33,13 +33,14 @@ public class MissionDao implements DaoInterface<Mission> {
 			return entityManagerHandler.getEntityManager()
 	    			.createQuery("FROM Mission ORDER BY missionId ASC", Mission.class)
 	    			.getResultList();
-		} catch (Exception e) { //sqlexception ma eclipse rompe
+		} catch (HibernateException e) {
+			logger.error("Error retrive mission " + e.getMessage());
 			throw new DatabaseException("Error while getting mission", e);
 		}
 	    
 	}
 	
-	public Mission getMissionById(int idMission, EntityManagerHandler entityManagerHandler) throws SQLException {
+	public Mission getMissionById(int idMission, EntityManagerHandler entityManagerHandler) {
 		try {
 			return entityManagerHandler.getEntityManager()
 					.createQuery("FROM Mission m WHERE m.missionId = :missionId", Mission.class)
@@ -51,12 +52,12 @@ public class MissionDao implements DaoInterface<Mission> {
 			return null;
 		} catch (HibernateException e) {
 			logger.error("Error retrieving mission with id: " + idMission, e);
-			throw new SQLException("Error retrieving mission", e);
+			throw new DatabaseException("Error while getting mission, missionId: "+idMission, e);
 
 		}
 	}
 	
-	public void updateMission(Mission mission, EntityManagerHandler entityManagerHandler) throws SQLException {
+	public void updateMission(Mission mission, EntityManagerHandler entityManagerHandler) {
 		try {
 			entityManagerHandler.getEntityManager()
 		    .createQuery("UPDATE Mission m " +
@@ -85,7 +86,7 @@ public class MissionDao implements DaoInterface<Mission> {
 		    .executeUpdate();
 		} catch (HibernateException e) {
 	        logger.error("Error updating mission by missionId: " + mission.getMissionId() + e.getMessage());
-	        throw new SQLException("Error updating mission", e);
+	        throw new DatabaseException("Error while updating mission, missionId" + mission.getMissionId(), e);
 		}
 	}
 	

@@ -21,7 +21,7 @@ public class MemberServiceDao {
 		}
 	}
 	
-    public Member retrieveByMemberId (int idMember) throws SQLException {
+    public Member retrieveByMemberId (int idMember) {
     	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
     		return memberDao.retrieveByMemberId(idMember, entityManagerHandler);
     	}

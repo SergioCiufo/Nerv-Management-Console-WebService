@@ -17,7 +17,7 @@ public class SimulationParticipantsServiceDao {
 		this.simulationParticipantsDao = new SimulationParticipantsDao();
 	}
 	
-	public void createParticipant(SimulationParticipant simulationParticipant) throws SQLException{
+	public void createParticipant(SimulationParticipant simulationParticipant){
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			simulationParticipantsDao.createParticipant(simulationParticipant, entityManagerHandler);
@@ -25,13 +25,13 @@ public class SimulationParticipantsServiceDao {
 		}
 	}
 	
-	public SimulationParticipant getParticipantbyUserAndMemberId(User user, Member member) throws SQLException{
+	public SimulationParticipant getParticipantbyUserAndMemberId(User user, Member member) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			return simulationParticipantsDao.getParticipantbyUserAndMemberId(user, member, entityManagerHandler);
 		}
 	}
 	
-	public void removeParticipant (User user, Simulation simulation) throws SQLException{
+	public void removeParticipant (User user, Simulation simulation) {
 		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			simulationParticipantsDao.removeParticipant(user, simulation, entityManagerHandler);
