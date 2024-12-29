@@ -28,5 +28,9 @@ public class MissionService {
 	public void updateMission(Mission mission) {
 		missionServiceDao.updateMission(mission);
 	}
+	
+	public void addEventMission(Mission mission) {
+		missionServiceDao.addEventMission(mission);
+	}
 
 }

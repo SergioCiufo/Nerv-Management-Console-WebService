@@ -15,4 +15,10 @@
     	url-pattern="/soap/UserServiceSoap"/>
     	
     	 <!-- /soap non dovrebbe servire -->
+   	
+   	<endpoint
+   		name="MissionEventServiceSoap"
+   		implementation="com.company.NervManagementConsoleREST.serviceSOAP.MissionEventServiceSoap"
+   		url-pattern="/soap/MissionEventServiceSoap"/>
+   		
 </endpoints>

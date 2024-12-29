@@ -7,6 +7,7 @@ import java.util.Objects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.company.NervManagementConsoleREST.utils.BlobConverter;
+import com.company.NervManagementConsoleREST.utils.BooleanToCharConverterUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -47,7 +49,11 @@ public class Mission extends Activity {
 	@Transient
 	private List<MissionParticipants> missionParticipants;
 	
+	@Convert(converter = BooleanToCharConverterUtils.class) // Y or N
+	private Boolean eventMission; //true la missione è un evento speciale //false è una missione normale
 	
+	@Convert(converter = BooleanToCharConverterUtils.class) // Y or N
+	private Boolean available; //true la missione è disponibile per essere giocata //false la missione non è disponibile per essere giocata
 
 	public Mission() {
 		super();
@@ -130,6 +136,22 @@ public class Mission extends Activity {
 		this.image = image;
 	}
 
+	public Boolean getEventMission() {
+		return eventMission;
+	}
+
+	public void setEventMission(Boolean eventMission) {
+		this.eventMission = eventMission;
+	}
+
+	public Boolean getAvailable() {
+		return available;
+	}
+
+	public void setAvailable(Boolean available) {
+		this.available = available;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -147,13 +169,16 @@ public class Mission extends Activity {
 		if (getClass() != obj.getClass())
 			return false;
 		Mission other = (Mission) obj;
-		return Objects.equals(description, other.description) && Objects.equals(missionId, other.missionId)
-				&& Objects.equals(participantsMax, other.participantsMax);
+		return Objects.equals(description, other.description) 
+				&& Objects.equals(missionId, other.missionId)
+				&& Objects.equals(participantsMax, other.participantsMax)
+				&& Objects.equals(eventMission, other.eventMission)
+				&& Objects.equals(available, other.available);
 	}
 
 	@Override
 	public String toString() {
-		return "Mission [missionId=" + missionId + ", description=" + description + ", image=" + image
+		return "Mission [missionId=" + missionId + ", event= " + eventMission + ", description=" + description + ", image=" + image
 				+ ", participantsMax=" + participantsMax + ", name=" + name + ", durationTime=" + durationTime
 				+ ", getExp()=" + getExp() + ", getLevel()=" + getLevel() + ", getSynchronizationRate()="
 				+ getSynchronizationRate() + ", getTacticalAbility()=" + getTacticalAbility() + ", getSupportAbility()="

@@ -490,7 +490,7 @@ body {
 
 	                if(lastMission.getResult() == MissionResult.LOSE){
 	                	for(Mission miss : user.getMissions()){
-	                		if(lastMission.getMission().getMissionId().equals(miss.getMissionId())){
+	                		if(lastMission.getMission().getMissionId().equals(miss.getMissionId()) && miss.getAvailable() == true){
 	                	%>
 
 				<button id=btnIdMission<%=miss.getMissionId()%>
@@ -814,7 +814,7 @@ body {
                     	found= false;
                 	}
 
-                	 if (!found) {
+                	 if (!found && miss.getAvailable() == true) {
                 		 %>
 				<button id=btnIdMission<%=miss.getMissionId() %>
 					data-missId="<%=miss.getMissionId()%>"

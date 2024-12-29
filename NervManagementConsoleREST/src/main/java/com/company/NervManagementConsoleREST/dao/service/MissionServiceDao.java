@@ -43,4 +43,14 @@ public class MissionServiceDao {
 		}
 	}
 	
+	//Ci garantiamo di avere un evento disponibile alla volta
+	public void addEventMission(Mission mission) {
+		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+			entityManagerHandler.beginTransaction();
+			missionDao.updateEventMissionByAvailableTrue(entityManagerHandler);
+			missionDao.create(mission, entityManagerHandler);
+			entityManagerHandler.commitTransaction();
+		}
+	}
+	
 }

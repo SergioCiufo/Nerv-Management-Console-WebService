@@ -90,4 +90,17 @@ public class MissionDao implements DaoInterface<Mission> {
 		}
 	}
 	
+	public void updateEventMissionByAvailableTrue(EntityManagerHandler entityManagerHandler) {
+		try {
+			entityManagerHandler.getEntityManager()
+			.createQuery("UPDATE FROM Mission m "
+					+ "SET m.available = false "
+					+ "WHERE m.eventMission = true")
+			.executeUpdate();
+		} catch (HibernateException e) {
+			logger.error("Error updating missionEvent", e);
+	        throw new DatabaseException("Unexpected error during updating MissionEvent", e);
+		}
+	}
+	
 }
