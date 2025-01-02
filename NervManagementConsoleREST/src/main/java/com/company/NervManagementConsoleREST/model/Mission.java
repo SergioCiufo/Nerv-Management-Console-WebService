@@ -1,6 +1,7 @@
 package com.company.NervManagementConsoleREST.model;
 
 import java.sql.Blob;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,9 +20,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.company.NervManagementConsoleREST.utils.BlobConverter;
 import com.company.NervManagementConsoleREST.utils.BooleanToCharConverterUtils;
+import com.company.NervManagementConsoleREST.utils.LocalDateAdapterUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -54,7 +57,12 @@ public class Mission extends Activity {
 	
 	@Convert(converter = BooleanToCharConverterUtils.class) // Y or N
 	private Boolean available; //true la missione è disponibile per essere giocata //false la missione non è disponibile per essere giocata
-
+	
+	//JAXB non supporta nativamente LocalDate, 
+	//quindi è necessario un XmlAdapter per serializzarlo correttamente come stringa (yyyy-MM-dd) in XML.
+	@XmlJavaTypeAdapter(LocalDateAdapterUtils.class)
+	private LocalDate releaseDate;
+	
 	public Mission() {
 		super();
 	}
@@ -96,6 +104,20 @@ public class Mission extends Activity {
 	this.participantsMax = participantsMax;
 	}
 	
+	public Mission(Integer missionId, String description, Blob image, Integer participantsMax,
+			List<MissionParticipants> missionParticipants, Boolean eventMission, Boolean available,
+			LocalDate releaseDate) {
+		super();
+		this.missionId = missionId;
+		this.description = description;
+		this.image = image;
+		this.participantsMax = participantsMax;
+		this.missionParticipants = missionParticipants;
+		this.eventMission = eventMission;
+		this.available = available;
+		this.releaseDate = releaseDate;
+	}
+
 	public Integer getMissionId() {
 		return missionId;
 	}
@@ -152,6 +174,14 @@ public class Mission extends Activity {
 		this.available = available;
 	}
 
+	public LocalDate getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(LocalDate releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -173,7 +203,8 @@ public class Mission extends Activity {
 				&& Objects.equals(missionId, other.missionId)
 				&& Objects.equals(participantsMax, other.participantsMax)
 				&& Objects.equals(eventMission, other.eventMission)
-				&& Objects.equals(available, other.available);
+				&& Objects.equals(available, other.available)
+				&& Objects.equals(releaseDate, other.releaseDate);
 	}
 
 	@Override
