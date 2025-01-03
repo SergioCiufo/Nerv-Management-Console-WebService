@@ -55,7 +55,7 @@
                     <p class="pError"><b><%=errorLogin%></b></p>
                     <% } %>
                     <div class="col-6 mt-2">                
-                        <button type="submit" class="btn btn-danger">ACCESS</button>
+                        <button id="loginSubmit" type="submit" class="btn btn-danger">ACCESS</button>
                     </div>
                 </div>
             </form>
