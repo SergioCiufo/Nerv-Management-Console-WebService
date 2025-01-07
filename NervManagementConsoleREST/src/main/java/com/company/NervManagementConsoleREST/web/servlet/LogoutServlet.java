@@ -18,8 +18,8 @@ public class LogoutServlet extends HttpServlet {
 			req.getSession().removeAttribute(Costants.KEY_SESSION_USER);
 			resp.sendRedirect(req.getContextPath() + "/jsp/private/Home.jsp");
 		} catch (Exception e) {
-			e.printStackTrace();
-			req.getRequestDispatcher("/jsp/public/Error.jsp").forward(req, resp);
-		}
+            e.printStackTrace();
+            req.getRequestDispatcher("/jsp/public/Error.jsp").forward(req, resp);
+        }
 	}
 }

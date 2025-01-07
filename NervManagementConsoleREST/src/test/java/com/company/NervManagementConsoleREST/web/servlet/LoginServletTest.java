@@ -35,7 +35,7 @@ public class LoginServletTest {
 	
 	@BeforeEach
 	public void setup() throws IllegalAccessException, NoSuchFieldException, SecurityException {
-		//abbiamo aggirato e possiamo scrivere in un campo privato
+		//abbiamo aggirato e possiamo scrivere in un campo privato //private final LoginService loginService = new LoginService();
 		//FieldUtils.writeField(loginServlet, "loginService", loginService);
 	
 		Field f = loginServlet.getClass().getDeclaredField("loginService");
@@ -103,7 +103,33 @@ public class LoginServletTest {
 	}
 	
 	@Test
-	public void shouldSendRedirectToError_whenGenericExceptionReceived() {
+	public void shouldSendRedirectToError_whenGenericExceptionReceived() throws Exception {
+		
+		//parameters
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse resp = mock(HttpServletResponse.class);
+		HttpSession session = mock(HttpSession.class);
+		RequestDispatcher dispatcher = mock(RequestDispatcher.class);
+		String path = "localHost:8080";
+		String username= "username";
+		String password= "password";
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		Exception genericException = new Exception("test", null);
+		
+		//mocks
+		doReturn(username).when(request).getParameter(Costants.FORM_LOGIN_USERNAME);
+	    doReturn(password).when(request).getParameter(Costants.FORM_LOGIN_PASSWORD);
+	    doThrow(genericException).when(loginService).loginCheck(username, password);
+	    doReturn(dispatcher).when(request).getRequestDispatcher("/jsp/public/Error.jsp");
+		
+		//test
+		//assertThrows(InvalidCredentialsException.class, () -> loginServlet.doPost(request, resp));
+		loginServlet.doPost(request, resp);
+		
+		//results		//se più di una volta, sennò togliere times //never se non viene mai chiamata
+		verify(dispatcher).forward(request, resp);
 		
 	}
 	
