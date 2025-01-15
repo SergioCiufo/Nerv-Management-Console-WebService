@@ -13,19 +13,21 @@ import com.company.NervManagementConsoleREST.model.User;
 
 public class MissionArchiveServiceDao {
 	private MissionArchiveDao missionArchiveDao;
+	private JpaUtil jpaUtil;
 	
 	public MissionArchiveServiceDao() {
 		this.missionArchiveDao = new MissionArchiveDao();
+		this.jpaUtil = new JpaUtil();
 	}
 	
 	public List<MissionArchive> retriveByUserIdAndIdMission(User user, Mission mission){
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			return missionArchiveDao.retriveByUserIdAndIdMission(user, mission, entityManagerHandler);
 		}
 	}
 	
 	public void addMissionArchive (MissionArchive missionArchive) {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			missionArchiveDao.addMissionArchive(missionArchive, entityManagerHandler);
 			entityManagerHandler.commitTransaction();
@@ -33,13 +35,13 @@ public class MissionArchiveServiceDao {
 	}
 	
 	public MissionArchive retriveByUserIdAndIdMissionResultProgress (User user, Mission mission) {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			return missionArchiveDao.retriveByUserIdAndIdMissionResultProgress(user, mission, entityManagerHandler);	
 		}
 	}
 	
 	public void updateMissionResult(MissionArchive missionArchive, MissionResult missionResult) {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			missionArchiveDao.updateMissionResult(missionArchive, missionResult, entityManagerHandler);
 			entityManagerHandler.commitTransaction();
@@ -47,7 +49,7 @@ public class MissionArchiveServiceDao {
 	}
 	
 	public List<MissionArchive> retriveByUserId (int userId) {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			return missionArchiveDao.retriveByUserId(userId, entityManagerHandler);
 		}
 	}

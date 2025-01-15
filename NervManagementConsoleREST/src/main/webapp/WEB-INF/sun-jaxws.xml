@@ -3,10 +3,6 @@
     <!-- name: nome del servizio (qualsiasi nome va bene) -->
     <!-- implementation: la classe che espone soap, annotata con @WebService -->
     <!-- url-pattern: l'url dove il servizio sarà disponibile -->
-    <endpoint
-        name="MySoapService"
-        implementation="com.company.NervManagementConsoleREST.serviceSOAP.MySoapService"
-        url-pattern="/soap/MySoapService"/>
         
         <!-- /soap non dovrebbe servire -->
     <endpoint

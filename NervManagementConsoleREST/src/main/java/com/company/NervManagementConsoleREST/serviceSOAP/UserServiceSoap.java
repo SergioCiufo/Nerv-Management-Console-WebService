@@ -25,7 +25,7 @@ public class UserServiceSoap {
 	@WebMethod(operationName = "addUser")
 	public Response addUser(@WebParam(name = "user") User u) {
 		try {
-			registerService.register(u.getName(), u.getSurname(), u.getUsername(), u.getPassword());
+			registerService.register(u);
 			return Response.status(Response.Status.CREATED).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();

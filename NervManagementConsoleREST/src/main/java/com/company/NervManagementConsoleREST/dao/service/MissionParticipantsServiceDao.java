@@ -12,19 +12,21 @@ import com.company.NervManagementConsoleREST.model.User;
 
 public class MissionParticipantsServiceDao {
 	private MissionParticipantsDao missionParticipantsDao;
+	private JpaUtil jpaUtil;
 	
 	public MissionParticipantsServiceDao() {
 		this.missionParticipantsDao = new MissionParticipantsDao();
+		this.jpaUtil = new JpaUtil();
 	}
 	
 	public List<MissionParticipants> getMissionParticipantsByUserIdAndMissionId (User user, Mission mission){
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			return missionParticipantsDao.getMissionParticipantsByUserIdAndMissionId(user, mission, entityManagerHandler);
 		}
 	}
 	
 	public void startMission(MissionParticipants missionParticipants) {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			missionParticipantsDao.startMission(missionParticipants, entityManagerHandler);
 			entityManagerHandler.commitTransaction();
@@ -32,7 +34,7 @@ public class MissionParticipantsServiceDao {
 	}
 	
 	public void removeParticipant(User user, Mission mission){
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			missionParticipantsDao.removeParticipant(user, mission, entityManagerHandler);
 			entityManagerHandler.commitTransaction();
@@ -40,7 +42,7 @@ public class MissionParticipantsServiceDao {
 	}
 	
 	public List<MissionParticipants> getActiveMissionsByUserId (int userId) {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			return missionParticipantsDao.getActiveMissionsByUserId(userId, entityManagerHandler);
 		}
 	}

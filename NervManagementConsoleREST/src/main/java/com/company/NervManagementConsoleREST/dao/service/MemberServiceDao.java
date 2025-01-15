@@ -10,19 +10,21 @@ import com.company.NervManagementConsoleREST.model.Member;
 
 public class MemberServiceDao {
 	private MemberDao memberDao;
+	private JpaUtil jpaUtil;
 	
 	public MemberServiceDao() {
 		this.memberDao = new MemberDao();
+		this.jpaUtil = new JpaUtil();
 	}
 	
 	public List<Member> retrieveMembers() {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			return memberDao.retrieve(entityManagerHandler);
 		}
 	}
 	
     public Member retrieveByMemberId (int idMember) {
-    	try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+    	try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
     		return memberDao.retrieveByMemberId(idMember, entityManagerHandler);
     	}
     }

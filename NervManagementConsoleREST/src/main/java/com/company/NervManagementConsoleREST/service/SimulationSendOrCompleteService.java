@@ -57,29 +57,32 @@ public class SimulationSendOrCompleteService {
 
 				UserMembersStats ums;
 				ums= userMemberStatsService.retrieveStatsByUserAndMember(user, member);
-
+				
+				CalculateUtils calculateUtils = new CalculateUtils();
+				
 				Integer suppAbility = simulation.getSupportAbility();
-				suppAbility = CalculateUtils.randomizeStats(suppAbility);
+				suppAbility = calculateUtils.randomizeStats(suppAbility);
 				suppAbility =(suppAbility+ums.getSupportAbility());
-				suppAbility = CalculateUtils.MinMaxStat(suppAbility);
+				suppAbility = calculateUtils.MinMaxStat(suppAbility);
 				ums.setSupportAbility(suppAbility);
 
 				Integer sincRate = simulation.getSynchronizationRate();
-				sincRate = CalculateUtils.randomizeStats(sincRate);
+				sincRate = calculateUtils.randomizeStats(sincRate);
 				sincRate = (sincRate+ums.getSynchronizationRate());
-				sincRate = CalculateUtils.MinMaxStat(sincRate);
+				sincRate = calculateUtils.MinMaxStat(sincRate);
 				ums.setSynchronizationRate(sincRate);
 
 				Integer tactAbility = simulation.getTacticalAbility();
-				tactAbility= CalculateUtils.randomizeStats(tactAbility);
+				tactAbility= calculateUtils.randomizeStats(tactAbility);
 				tactAbility = (tactAbility+ums.getTacticalAbility());
-				tactAbility = CalculateUtils.MinMaxStat(tactAbility);
+				tactAbility = calculateUtils.MinMaxStat(tactAbility);
 				ums.setTacticalAbility(tactAbility);
 
 				Integer newExp =simulation.getExp();
-				newExp = CalculateUtils.randomizeStats(newExp);
-
-				ums=LevelUpUtils.levelUp(ums, newExp);
+				newExp = calculateUtils.randomizeStats(newExp);
+				
+				LevelUpUtils levelUpUtils = new LevelUpUtils();
+				ums=levelUpUtils.levelUp(ums, newExp);
 
 				userMemberStatsService.updateMembStatsCompletedSim(user, member, ums);
 				simulationParticipantsService.removeParticipant(user, simulation);

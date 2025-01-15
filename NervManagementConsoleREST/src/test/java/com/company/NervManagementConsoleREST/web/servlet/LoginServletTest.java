@@ -1,6 +1,5 @@
 package com.company.NervManagementConsoleREST.web.servlet;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -9,27 +8,27 @@ import static org.mockito.Mockito.verify;
 
 import java.lang.reflect.Field;
 
+import javax.persistence.Persistence;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.hibernate.annotations.common.reflection.ReflectionUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.internal.util.reflection.Fields;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
-
+import com.company.NervManagementConsoleREST.dao.service.UserServiceDao;
 import com.company.NervManagementConsoleREST.exception.InvalidCredentialsException;
 import com.company.NervManagementConsoleREST.model.User;
 import com.company.NervManagementConsoleREST.service.LoginService;
 import com.company.NervManagementConsoleREST.utils.Costants;
 
 public class LoginServletTest {
-	private LoginServlet loginServlet = new LoginServlet();
-	
+	//ci prendiamo la classe su cui stiamo andando a fare il mock
+	private LoginServlet loginServlet;
+
 	 //oggetto mock
 	private LoginService loginService = mock(LoginService.class);
 	
@@ -37,7 +36,11 @@ public class LoginServletTest {
 	public void setup() throws IllegalAccessException, NoSuchFieldException, SecurityException {
 		//abbiamo aggirato e possiamo scrivere in un campo privato //private final LoginService loginService = new LoginService();
 		//FieldUtils.writeField(loginServlet, "loginService", loginService);
-	
+		
+		try (MockedStatic<Persistence> mockedPersistence = Mockito.mockStatic(Persistence.class)) {
+			loginServlet = new LoginServlet();
+	    }
+		
 		Field f = loginServlet.getClass().getDeclaredField("loginService");
         f.setAccessible(true);
         f.set(loginServlet, loginService);
@@ -81,7 +84,7 @@ public class LoginServletTest {
 				String path = "localHost:8080";
 				String username= "username";
 				String password= "password";
-				User user = new User();
+				User user = new User(); 
 				user.setUsername(username);
 				user.setPassword(password);
 				InvalidCredentialsException invalidCredentialEcException = new InvalidCredentialsException("test", null);

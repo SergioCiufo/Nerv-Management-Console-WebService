@@ -47,25 +47,6 @@ public class SimulationDao implements DaoInterface<Simulation> {
 	    }
 	    
 	}
-	
-	
-	public Simulation getSimulationById(int simulationId, EntityManagerHandler entityManagerHandler) {
-	    try {
-	        return entityManagerHandler.getEntityManager()
-	        		.createQuery("FROM Simulation s "
-	        				+ "JOIN FETCH s.simulationParticipants sp "
-	        				+ "WHERE s.simulationId = :simulationId", Simulation.class)
-	        		.setParameter("simulationId", simulationId)
-	        		.getSingleResult();
-	        		
-	    }catch (NoResultException e) {
-	        logger.error("No Simulation found with id: " + simulationId);
-	        return null;
-	    } catch (HibernateException e) {
-	        logger.error("Error retrieving Simulation: " + simulationId + " " + e.getMessage());
-	        throw new DatabaseException("Unexpected error retrive simulation by simulationId: "+simulationId, e);
-	    }
-	}
 
 	public List<Simulation> getSimulationAndParticipantsByUserId(User user, EntityManagerHandler entityManagerHandler) {
 	    try {

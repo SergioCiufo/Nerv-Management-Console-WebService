@@ -5,7 +5,7 @@ import com.company.NervManagementConsoleREST.model.User;
 import com.company.NervManagementConsoleREST.model.UserMembersStats;
 
 public class MemberStatsAddUtils {
-	 public static UserMembersStats createStatsMembers(User user, Member member) {
+	 public UserMembersStats createStatsMembers(User user, Member member) {
 	        switch (member.getName()) {
 	            case "Rei":
 	                return new UserMembersStats(true, 0, 1, 25, 25, 50, user, member);

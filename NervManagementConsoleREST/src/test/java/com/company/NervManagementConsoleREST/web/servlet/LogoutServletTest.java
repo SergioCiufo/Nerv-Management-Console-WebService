@@ -7,21 +7,32 @@ import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 
+import javax.persistence.Persistence;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import com.company.NervManagementConsoleREST.utils.Costants;
 
 public class LogoutServletTest {
-	private LogoutServlet logoutServlet = new LogoutServlet();
+	private LogoutServlet logoutServlet;
 	
 	//non serve un oggetto mock per questa classe perché non utilizza alcun servizio o dipendenza esterna da simulare
 	//in questo caso non serve neanche il @BeforeEach. Poiché non sta inizializzando nessun oggetto o dipendenza complessa
+	
+	@BeforeEach
+	public void setup() {
+		try (MockedStatic<Persistence> mockedPersistence = Mockito.mockStatic(Persistence.class)) {
+			logoutServlet = new LogoutServlet();
+	    }
+	}
 	
 	@Test
 	public void shouldRemoveSession_whenAllOk() throws Exception {

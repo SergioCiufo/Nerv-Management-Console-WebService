@@ -254,14 +254,16 @@ public class User {
 	@JsonProperty("image")
 	//@XmlElement(name = "image")
 	public String getImageAsBase64() {
-		return BlobConverter.blobToBase64(this.image);
+		BlobConverter blobConverter = new BlobConverter();
+		return blobConverter.blobToBase64(this.image);
 	}
 	
 	//Metodo per impostare l'immagine da una stringa Base64
 	@JsonProperty("image")
 	//@XmlElement(name = "image")
 	public void setImageFromBase64(String base64Image) {
-        this.image = BlobConverter.base64ToBlob(base64Image);
+		BlobConverter blobConverter = new BlobConverter();
+        this.image = blobConverter.base64ToBlob(base64Image);
     }
 
 

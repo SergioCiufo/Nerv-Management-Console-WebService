@@ -76,13 +76,6 @@ public class MissionArchive {
 		this.result = result;
 	}
 
-
-
-
-    
-    
-    
-
     public User getUser() {
 		return user;
 	}

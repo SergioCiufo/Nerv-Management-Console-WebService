@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class CalculateUtils {
 
-	    public static Integer calculateAverage(List<Integer> list) {
+	    public Integer calculateAverage(List<Integer> list) {
 	        if (list.isEmpty()) {
 	            return 0;
 	        }
@@ -16,7 +16,7 @@ public class CalculateUtils {
 	        return sum / list.size();
 	    }
 
-	    public static boolean calculateWinLoseProbability(Integer missionSr, Integer missionSa, Integer missionTa, List<Integer> syncRateToAvg, List<Integer> tactAbilityToAvg, List<Integer> suppAbilityToAvg) {
+	    public boolean calculateWinLoseProbability(Integer missionSr, Integer missionSa, Integer missionTa, List<Integer> syncRateToAvg, List<Integer> tactAbilityToAvg, List<Integer> suppAbilityToAvg) {
 	        Integer avgSyncRate = calculateAverage(syncRateToAvg);
 	        Integer avgTactAbility = calculateAverage(tactAbilityToAvg);
 	        Integer avgSuppAbility = calculateAverage(suppAbilityToAvg);
@@ -31,16 +31,10 @@ public class CalculateUtils {
 
 	        boolean result = winPossibility >= defeatProbability;
 
-	        if (result) {
-	            System.out.println("Winner Winner Chicken Dinner!");
-	        } else {
-	            System.out.println("You Lose");
-	        }
-
 	        return result;
 	    }
 	    
-		public static Integer MinMaxStat (Integer stat) {
+		public Integer MinMaxStat (Integer stat) {
 			 if (stat < 0) {
 			        return 0;
 			    } else if (stat > 100) {
@@ -49,7 +43,7 @@ public class CalculateUtils {
 			    return stat;
 		}
 		
-		public static int randomizeStats(Integer attrbMax) {
+		public int randomizeStats(Integer attrbMax) {
 			Random random = new Random ();
 			int valueRandom=0;
 			if(attrbMax<0) {

@@ -26,7 +26,7 @@ public class UserDao implements DaoInterface<User> {
 	    	entityManagerHandler.persist(ref);
 	    } catch (HibernateException e) {
 	        logger.error("Error adding user: " + ref + e.getMessage());
-	        throw new DatabaseException("Unexpected error create user" + ref.getUsername(), e);
+	        throw new DatabaseException("Unexpected error create user " + ref.getUsername(), e);
 	    }
 	}
 	

@@ -15,6 +15,7 @@ import com.company.NervManagementConsoleREST.model.MissionArchive.MissionResult;
 import com.company.NervManagementConsoleREST.utils.CalculateUtils;
 import com.company.NervManagementConsoleREST.utils.LevelUpUtils;
 import com.company.NervManagementConsoleREST.utils.MissionCodeGeneratorUtils;
+import com.company.NervManagementConsoleREST.utils.MissionResultUtils;
 
 public class MissionSendOrCompleteService {
 	private MissionService missionService;
@@ -55,7 +56,8 @@ public class MissionSendOrCompleteService {
 		Integer suppAbility =null;
 
 		List<MissionArchive> missionArch = missionArchiveService.retriveByUserIdAndIdMission(user, mission);
-		String missionCode = MissionCodeGeneratorUtils.missionCodeGenerator(missionArch, idMission);
+		MissionCodeGeneratorUtils missionCodeGeneratorUtils = new MissionCodeGeneratorUtils();
+		String missionCode = missionCodeGeneratorUtils.missionCodeGenerator(missionArch, idMission);
 
 		for (Member memb : user.getMembers()) {
 			memb.setMemberStats(userMemberStatsService.retrieveStatsByUserAndMember(user, memb));
@@ -92,13 +94,15 @@ public class MissionSendOrCompleteService {
 				ums.add(umStats);
 			}	
 			
-			Boolean result = null;
-			result = missionResult(result, mission, idMission, ums);
+			//Boolean result = null;
+			MissionResultUtils missionResultUtils = new MissionResultUtils();
+			Boolean result = missionResultUtils.missionResult(mission, idMission, ums);
 			Integer newExp =mission.getExp();
-
+			
+			LevelUpUtils levelUpUtils = new LevelUpUtils();
 			for (UserMembersStats uMemberStats : ums) {
 				if(result==true) {
-					uMemberStats=LevelUpUtils.levelUp(uMemberStats, newExp);
+					uMemberStats=levelUpUtils.levelUp(uMemberStats, newExp);
 					uMemberStats.setStatus(true);						
 					userMemberStatsService.updateMembStatsCompletedMission(uMemberStats);
 				}else {
@@ -118,7 +122,9 @@ public class MissionSendOrCompleteService {
 			return user;
 	}
 
-	public Boolean missionResult(Boolean result, Mission mission, Integer idMission, List<UserMembersStats> ums) {
+	/* per il test è stato spostato in una utils, creava problemi con comunicazione tra metodi della stessa classe
+	public Boolean missionResult(Mission mission, Integer idMission, List<UserMembersStats> ums) {
+		Boolean result = null;
 		List<Integer>syncRateToAvg = new ArrayList<Integer>();
 		List<Integer>tactAbilityToAvg = new ArrayList<Integer>();
 		List<Integer>suppAbilityToAvg = new ArrayList<Integer>();
@@ -142,5 +148,5 @@ public class MissionSendOrCompleteService {
 		result=CalculateUtils.calculateWinLoseProbability(mission.getSynchronizationRate(), mission.getSupportAbility(), mission.getTacticalAbility(), syncRateToAvg, tactAbilityToAvg, suppAbilityToAvg);
 		return result;
 	}
-
+*/
 }

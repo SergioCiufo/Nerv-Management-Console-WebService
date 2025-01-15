@@ -83,7 +83,7 @@ public class MissionArchiveDao implements DaoInterface<MissionArchiveDao> {
 	        .setParameter("missionCode", ref.getMissionCode())
 	        .executeUpdate();
 	    } catch (HibernateException e) {
-	        e.printStackTrace();
+	    	throw new DatabaseException("Error updating MissionArchive: " + ref.getMissionArchiveId(), e);
 	    }
 	}
 }

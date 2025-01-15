@@ -62,7 +62,7 @@ public class UserServiceRest {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response addUser(User u) {
     	try {
-    		registerService.register(u.getName(), u.getSurname(), u.getUsername(), u.getPassword());
+    		registerService.register(u);
     		return Response.status(Response.Status.NO_CONTENT).build(); //no content 204
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();

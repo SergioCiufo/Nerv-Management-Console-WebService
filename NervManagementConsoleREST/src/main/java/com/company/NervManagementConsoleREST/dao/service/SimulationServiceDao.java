@@ -11,26 +11,28 @@ import com.company.NervManagementConsoleREST.model.User;
 
 public class SimulationServiceDao {
 	private SimulationDao simulationDao;
+	private JpaUtil jpaUtil;
 
 	public SimulationServiceDao() {
 		super();
 		this.simulationDao = new SimulationDao();
+		this.jpaUtil = new JpaUtil();
 	}
 	
 	public List<Simulation> retrieveSimulations() {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			return simulationDao.retrieve(entityManagerHandler);
 		}
 	}
 	
 	public List<Simulation> getSimulationAndParticipantsByUserId(User user) {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			return simulationDao.getSimulationAndParticipantsByUserId(user, entityManagerHandler);
 		}
 	}
 	
 	public Simulation retrieveBySimulationId(int simulationId) {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			return simulationDao.retrieveBySimulationId(simulationId, entityManagerHandler);
 		}
 	}

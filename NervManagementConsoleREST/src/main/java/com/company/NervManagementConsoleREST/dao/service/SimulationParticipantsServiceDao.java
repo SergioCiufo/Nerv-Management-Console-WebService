@@ -12,13 +12,15 @@ import com.company.NervManagementConsoleREST.model.User;
 
 public class SimulationParticipantsServiceDao {
 	private SimulationParticipantsDao simulationParticipantsDao;
+	private JpaUtil jpaUtil;
 	
 	public SimulationParticipantsServiceDao() {
 		this.simulationParticipantsDao = new SimulationParticipantsDao();
+		this.jpaUtil = new JpaUtil();
 	}
 	
 	public void createParticipant(SimulationParticipant simulationParticipant){
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			simulationParticipantsDao.createParticipant(simulationParticipant, entityManagerHandler);
 			entityManagerHandler.commitTransaction();
@@ -26,13 +28,13 @@ public class SimulationParticipantsServiceDao {
 	}
 	
 	public SimulationParticipant getParticipantbyUserAndMemberId(User user, Member member) {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			return simulationParticipantsDao.getParticipantbyUserAndMemberId(user, member, entityManagerHandler);
 		}
 	}
 	
 	public void removeParticipant (User user, Simulation simulation) {
-		try(EntityManagerHandler entityManagerHandler = JpaUtil.getEntityManager()){
+		try(EntityManagerHandler entityManagerHandler = jpaUtil.getEntityManager()){
 			entityManagerHandler.beginTransaction();
 			simulationParticipantsDao.removeParticipant(user, simulation, entityManagerHandler);
 			entityManagerHandler.commitTransaction();

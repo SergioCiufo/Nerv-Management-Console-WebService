@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.company.NervManagementConsoleREST.model.User;
 import com.company.NervManagementConsoleREST.service.RegisterService;
 
 @WebServlet("/register")
@@ -24,10 +25,10 @@ public class RegisterServlet extends HttpServlet {
 			String surname = req.getParameter("registerSurname");
 			String username = req.getParameter("registerUsername");
 			String password = req.getParameter("registerPassword");
-		
-			registerService.register(name, surname, username, password);
+			User newUser = new User(name, surname, username, password);
+			registerService.register(newUser);
 			req.getRequestDispatcher("/jsp/public/Login.jsp").forward(req, resp);
-		} catch (SQLException e) {
+		} catch (Exception e) { // si potrebbe gestire l'eccezione "username già esistente blabla" 
 			e.printStackTrace();
 			req.getRequestDispatcher("/jsp/public/Error.jsp").forward(req, resp);
 		}

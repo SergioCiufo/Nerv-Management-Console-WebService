@@ -6,7 +6,7 @@ import com.company.NervManagementConsoleREST.model.MissionArchive;
 
 
 public class MissionCodeGeneratorUtils {
-	public static String missionCodeGenerator(List<MissionArchive> missionArchive, Integer idMission){
+	public String missionCodeGenerator(List<MissionArchive> missionArchive, Integer idMission){
 		Integer missionTry=0;
 	    Integer missionTryParse=null;
 	    String lastMissionTryString;

@@ -18,22 +18,13 @@ import com.company.NervManagementConsoleREST.utils.MemberStatsAddUtils;
 //faranno chiamate al dao di primo livello
 public class UserMemberStatsService {
     private UserMemberStatsServiceDao userMemberStatsServiceDao;
-    private final Logger logger = LoggerFactory.getLogger(UserMemberStatsService.class);
 
     public UserMemberStatsService() {
         this.userMemberStatsServiceDao = new UserMemberStatsServiceDao();
     }
 
     public void createStatsForDefaultMembers(User user, List<Member> members) {
-        for (Member member : members) {
-            if (member.getIdMember() != null) {
-                UserMembersStats stats = MemberStatsAddUtils.createStatsMembers(user, member);
-                userMemberStatsServiceDao.saveStats(stats);
-                member.setMemberStats(stats);
-            } else {
-                logger.error("Member ID is null for: " + member.getIdMember() + member.getName() + member.getSurname());
-            }
-        }
+    	userMemberStatsServiceDao.saveStats(user, members);
     }
     
     public UserMembersStats retrieveStatsByUserAndMember(User user, Member member) {
